@@ -44,7 +44,6 @@ a {
 }
 
 #top-container {
-  position: fixed;
   padding-bottom: 5px;
   z-index: 999;
 }
@@ -68,12 +67,10 @@ a {
 
 #top-container .logo-link:hover,
 #top-container .logo-link:focus {
-  color: white;
-  text-shadow: 1px 1px 0 black, -1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black;
+  text-decoration: underline;
 }
 
 #top-container .info-link:hover,
 #top-container .info-link:focus {
-  color: white;
-  background-color: black;
+  text-decoration: underline;
 }

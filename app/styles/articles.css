@@ -7,7 +7,7 @@
 }
 
 #articles-container h2 {
-  display: inline;
+  display: block;
   font-size: 14px;
   font-weight: 400;
 }
@@ -27,12 +27,11 @@
 #articles-container a:focus,
 #articles-container a:hover li,
 #articles-container a:focus li {
-  background-color: black;
-  color: white;
+  text-decoration: underline;
 }
 
 #articles-container .articles-tags {
-  margin: 0;
+  margin-top: 5px;
 }
 
 #articles-container .articles-tags li {

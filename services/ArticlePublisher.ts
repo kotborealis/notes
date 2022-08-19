@@ -99,7 +99,7 @@ class ArticlePublisher {
    */
   private static getArticleByFilename(filename: string) {
     const mdContent = String(fs.readFileSync(`${this.ARTICLE_ORIGIN_PATH}/${filename}`));
-    const mdContentWithToc = `::: toggle(Table of Contents)\n[[toc]]\n:::\n${mdContent}`;
+    const mdContentWithToc = `::: toggle(Содержание)\n[[toc]]\n:::\n${mdContent}`;
     const htmlContent: string = this.md.render(this.extractContent(mdContentWithToc));
     const metaInfo: ArticleMetaInfo = this.extractMetaInfo(String(mdContent));
 
@@ -156,7 +156,9 @@ class ArticlePublisher {
    */
   public static publishArticles(id?: number) {
     const articleFiles: string[] = fs.readdirSync(this.ARTICLE_ORIGIN_PATH)
-      .filter((file) => !this.IGNORED_FILES.includes(file));
+      .filter((file) => !this.IGNORED_FILES.includes(file))
+      .filter((file) => file.indexOf('.md') > 0);
+      
 
     const distArticles: ArticleModel[] = articleFiles.map((articleFile: string, index: number) => {
       const article = ArticlePublisher.getArticleByFilename(articleFile).getArticle();
@@ -194,7 +196,7 @@ class ArticlePublisher {
       return article;
     });
 
-    PagePublisher.publishArticles(distArticles);
+    PagePublisher.publishIndex(distArticles);
   }
 }
 

@@ -72,29 +72,21 @@
 }
 
 #article-navigation a:hover div {
-  background-color: black;
-  color: white;
+  text-decoration: underline;
 }
 
 #article-list-button-container {
-  width: 90px;
-  height: 90px;
   margin: 20px auto auto;
 }
 
 #article-list-button-container #article-list-button {
-  display: table-cell;
-  width: 90px;
-  height: 90px;
-  border: 1px black solid;
-  border-radius: 100%;
   vertical-align: middle;
   text-align: center;
   font-size: 20px;
 }
 
 #article-list-button-container #article-list-button:hover {
-  background-color: black;
+  text-decoration: underline;
 }
 
 #article-comments {
@@ -164,9 +156,7 @@
 
 #article-content-container a:hover,
 #article-content-container a:focus {
-  text-decoration: none;
-  background-color: black;
-  color: white;
+  text-decoration: underline;
 }
 
 #article-content-container pre {
@@ -218,8 +208,7 @@
 }
 
 #article-content-container details[open=""] > summary {
-  background-color: black;
-  color: white;
+  
 }
 
 #article-content-container summary {

@@ -34,7 +34,7 @@
       <section id="article-navigation">
         <% if (nextArticle) { %>
           <div class="article-navigation-item article-navigation-next">
-            <a href="/article/<%- nextArticle.id %>.html">
+            <a href="../article/<%- nextArticle.id %>.html">
               <div class="article-navigation-arrow article-navigation-next">＜</div>
               <div class="article-navigation-content article-navigation-next">
                 <p class="article-navigation-title"><%- nextArticle.title %></p>
@@ -45,7 +45,7 @@
         <% } %>
         <% if (prevArticle) { %>
           <div class="article-navigation-item article-navigation-prev">
-            <a href="/article/<%- prevArticle.id %>.html">
+            <a href="../article/<%- prevArticle.id %>.html">
               <div class="article-navigation-arrow article-navigation-prev">＞</div>
               <div class="article-navigation-content article-navigation-prev">
                 <p class="article-navigation-title"><%- prevArticle.title %></p>
@@ -56,8 +56,11 @@
         <% } %>
       </section>
       <section id="article-list-button-container">
-        <a href="/articles.html">
-          <div id="article-list-button">📚</div>
+        <a href="../">
+          <div id="article-list-button">
+            <h1>./notes/</h1>
+            <small>kotborealis@awooo.ru</small>
+          </div>
         </a>
       </section>
     </article>
