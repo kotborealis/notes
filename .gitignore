@@ -1,0 +1,12 @@
+.vscode
+.idea
+
+.cache
+.sass-cache
+
+node_modules
+
+server
+css
+public
+dist
