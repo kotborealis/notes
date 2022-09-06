@@ -35,7 +35,7 @@ class ArticlePublisher {
   static IGNORED_FILES: string[] = ['.DS_Store'];
 
   static md: MarkdownIt = new MarkdownIt({
-    html: false,
+    html: true,
     xhtmlOut: false,
     breaks: false,
     langPrefix: 'language-',
@@ -70,11 +70,6 @@ class ArticlePublisher {
         return '</details>\n';
       },
     })
-    .use(mdLazyImage, {
-      decoding: true,
-      image_size: true,
-      base_path: path.join(__dirname, '../'),
-    });
 
   /**
    * Extracts content excluding front matter block.
