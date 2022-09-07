@@ -6,47 +6,50 @@ date: "2022.08.30"
 tags: "python, pyoxidizer, binary"
 ---
 
-# Паковка и поставка python-утилит
+# Паковка
 
-Любую утилиту, чтобы она приносила пользу, надо в каком-то виде поставиь конечному пользователю.
+Для того, чтобы любая утилита могла приносить какую-то пользу,
+её надо доставить конечному пользователю.
+В контексте python-приложений [этот вопрос можно считать не до конца закрытым](https://youtu.be/ftP5BQh1-YM?t=2033).
 
-В python'е традиционно это делается с помощью публикации собранного пакета в [pypi](https://pypi.org/).
+Например, традиционно принято распространять модули через индекс PyPi.
+Этот индекс традиционно работает с тремя типами пакетов: source distributions,
+Wheel и Egg (оба относятся к build distributions).
+Все эти типы пакетов решают одну и ту же проблему дистрибуции приложения,
+и не понятно, какой из них лучше.
 
-[pypi](https://pypi.org/) позволяет публиковать **source distributions** (`sdist`) и **build distributions** (`bdist`).
+Ещё больше проблем возникнет, если мы хотим отдать наше приложение
+не-python разработчику, или вообще не разработчику: надо установить python определённой версии,
+установить соответствующий pip, подумать о возможных конфликтах зависимостей и т.д.
 
-`sdist` это набор из метаданных и исходников, которые можно установить через `pip` или
-сгенерировать из них `bdist`. 
-Внутрь `sdist` не попадают платформозависимые файлы вроде нативных расширений, они появятся только в `bdist` или во время установки.
+В контексте python-приложений этот вопрос считается в целом не решённым.
 
-`bdist` это тоже набор метаданных и исходников, но уже собранных и готовых к использованию. Обычно это `Wheel` или `Egg`.
+## Нетрадиционные варианты
 
-У обоих подходов есть проблема в виде зависимостей: для пакета нужна корректная версия python'а, неконфликтующие версии
-библиотек и т.д. На [HN есть обсуждение](https://news.ycombinator.com/item?id=20672051) проблем python'а и его зависимостей, довольно интересно почитать:
-![Developer: Inspect editor tokens and scopes](../images/03/hn-py.png)
+Рассмотрим нетрадиционные варианты поставки python-приложений.
+Здесь перечисленны совсем не все (можно извращаться до бесконечности), а только
+интересные мне:
 
-<img src="../images/03/dumpsterfire.jpg" style="height: 300px" alt="Dumpster fire из зависимостей"/>
+* VM с установленным приложением и его зависимостями:
+    * >we ship a whole fucking Windows VM to avoid problems with Python depencencies
+    * Стабильный и надёжный, но странный и избыточный вариант.
+    * Не везде могут быть ресурсы для виртуализации.
+* Docker image с установленным приложением и его зависимостями:
+    * Очень похоже на вариант с VM, но в более тонком виде.
+    * Docker так же не везде работает. Примеры: Astra Linux 1.4 и OpenVZ-виртуалки со старым ядром.
+* Бинарный файл с приложением и его зависимостями.
+    * В теории, самый удобный вариант: достаточно скачать и запустить.
+    * Не очевидно, как реализовать.
 
-## Другие варианты поставки
+Очевидно, вариант с бинарным файлом выглядит лучше остальных.
+Рассмотрим, как его можно реализовать на практике.
 
-Кроме традиционной паковки python-приложений есть другие варианты:
+# Паковка python-приложений в бинарный файл.
 
-* Поставлять VM с развёрнутым приложением:
-    * На [HN](https://news.ycombinator.com/) был коммент вида "we ship a whole fucking Windows VM to avoid problems with Python depencencies", но не могу его откопать.
-    * Самый отбитый, надёжный и ж*ы*рный вариант.
-* Поставлять docker-образ с развёрнутым приложением:
-    * По надёжности сопоставим с VM и совсем не ж*ы*рный.
-    * Требует зависимости от docker'а, а он может не везде работать.
-        * Пример: на дешёвых VPS с OpenVZ и старым ядром docker не заводится.
-        * Пример 2: у меня не получилось втащить docker на Astra Linux 1.4.
-* Поставлять бинарник/архив с python'ом, зависимостями и исходниками.
+Для упаковки python-приложения в бинарный файл нам потребуется некая инфраструктура,
+которая запакует интерпретатор, приложение, его ресурсы и зависимости в единую сущность.
 
-Рассмотрим последний вариант, т.к. он звучит наименее отвратительно.
-
-# Паковка python-приложений в бинарник
-
-Для упаковки утилиты в бинарник/архив нам потребуется некая машинерия, которая запакует все ресурсы и интерпретатор в один файл.
-
-В *простейшем* случае это будет [bash-скрипт](https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11) с приписанным в конце tar-архивом (примерно так работают [rarjpeg'и](https://gist.github.com/cianb96/8089653)):
+В *простейшем* случае можно обойтись [bash-скриптом](https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11) с приписанным в конце tar-архивом:
 <style>
     #article-content-container .gist-embedded td { border: 0px; }
 </style>
@@ -54,92 +57,167 @@ tags: "python, pyoxidizer, binary"
     <script src="https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11.js"></script>
 </div>
 
-В этом случае нам потребуется вручную сделать архив с portable-интерпретатором, зависимостями, исходниками и путями.
-Делать этого не хочется, поэтому сравним несколько готовых вариантов.
+Рассмотрим уже готовые реализации паковщиков python-приложений.
 
 ## Паковщики
 
-Исследуя глубины github'а я нашёл несколько вариантов:
+В недрах Github'а можно найти несчётное количество реализаций паковки python-приложений,
+но надо выбрать несколько для сравнений.
+Основные критерии сравнения:
 
-* [pyinstaller](https://pyinstaller.org/en/stable/)
-    * Платформы: Win/MacOs/Unix 
-    * Написан на: Python 
-    * Последний релиз: 2022
-* [pyoxidizer](https://github.com/indygreg/PyOxidizer) 
-    * Платформы: Win/MacOs/Unix
-    * Написан на: Rust 
-    * Последний релиз: 2022
-* [cx-freeze](https://cx-freeze.readthedocs.io/en/latest/)
-    * Платформы: Win/MacOs/Unix 
-    * Написан на: Python 
-    * Последний релиз: 2022
-* [py2app](https://py2app.readthedocs.io/en/latest/) 
-    * Платформы: MacOS 
-* [py2exe](https://www.py2exe.org/)
-    * Платформы: Win 
-* [exxo](https://github.com/mbachry/exxo)
-    * Платформы: Unix
-    * Написан на: Python 
-    * Последний релиз: 2016
-* [bbfreeze](https://pypi.org/project/bbfreeze/)
-    * Платформы: Win/MacOs/*nix
-    * Последний релиз: 2014
+* Хочется живую реализацию, которая будет поддерживаться и развиваться.
+    * Можно определить по времени последнего релиза и популярности в виде звёздочек на github'е.
+        * *(да, я понимаю, что количетсво звёздочек означает примерно ничего, но помогает как минимум отсортировать варианты)*
+* Реализация должна поддерживать как минимум основные платформы.
+    * Нас интересует Window, Linux и опционально MacOs.
 
-Основные критерии для отбора:
+Самые интересные находки:
 
-* Последний релиз в пределе последнего года --- означает, что проект не совсем заброшен.
-* Максимальное покрытие платформ.
+| Название | Платформы | Релиз | ⭐ |
+|---|---|---|---|
+| [pyinstaller](https://pyinstaller.org/en/stable/) | Win/macOS/Unix | 2022 | 9.5k |
+| [pyoxidizer](https://github.com/indygreg/PyOxidizer) | Win/macOS/Unix | 2022 | 4.2k |
+| [cx-freeze](https://cx-freeze.readthedocs.io/en/latest/) | Win/macOS/Unix | 2022 | 956 |
+| [py2app](https://py2app.readthedocs.io/en/latest/) | macOS | 2022 | 208 |
+| [py2exe](https://www.py2exe.org/) | Win | 2022 | 463 |
+| [exxo](https://github.com/mbachry/exxo) | Unix | 2016 | 460 |
+| [bbfreeze](https://pypi.org/project/bbfreeze/) | Win/macOS/Unix | 2014 | 92 |
 
-Под эти критерии подходят только [pyinstaller](https://pyinstaller.org/en/stable/)
+Под заданные критерии лучше всего подходят [pyinstaller](https://pyinstaller.org/en/stable/)
 и [pyoxidizer](https://github.com/indygreg/PyOxidizer).
 
 ### pyinstaller
 
-[pyinstaller](https://pyinstaller.org/) работает как классический self-extracting archive: 
+[pyinstaller](https://pyinstaller.org/) работает как классический self-extracting archive:
 при запуске бинарника [он распаковывает ресурсы в `%tmp%`]((https://pyinstaller.org/en/stable/operating-mode.html#how-the-one-file-program-works)), запускает интерпретатор с правильными путями, схлопывается
 и подчищает за собой мусор.
+Это влечёт за собой проблемы с производительностью при запуске приложения:
+каждый раз мучать диск распаковкой ресурсов - дорого.
 
-Здесь сразу вылезает проблема: при каждом запуске проходит процесс распаковки на диск, что довольно дорого по сравнению с обычным питоном:
+Соберём пример приложения с помощью `pyinstaller`'а:
 ```sh
-$ hyperfine "./dist/test" "python3.8 ./test.py" --warmup 10
+╰─❯ pip install -U pyinstaller
 
-Benchmark 1: ./dist/test
- Time (mean ± ): 278.4 ms ± 3.2 ms [User: 225.1 ms, System: 58.7 ms]
- Range (min … max): 274.6 ms … 284.7 ms 10 runs
-Benchmark 2: python3.8 ./test.py
- Time (mean ± ): 92.2 ms ± 2.5 ms [User: 83.5 ms, System: 8.7 ms]
- Range (min … max): 89.3 ms … 100.5 ms 32 runs
-Summary
- 'python3.8 ./test.py' ran 3.02 ± 0.09 times faster than './dist/test'
+╰─❯ echo "print('Hello world')" > ./app.py
+
+╰─❯ pyinstaller ./app.py
+...
+
+╰─❯ file ./dist/app/app
+./dist/app/app: ELF 64-bit LSB executable, x86-64...
 ```
+
+Проверим производительность полученного бинарного файла,
+по сравнению с обычным python'ом:
+```sh
+╰─❯ hyperfine "./dist/app/app" "python3.8 ./app.py" --warmup 10
+```
+
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative |
+|:---|---:|---:|---:|---:|
+| `./dist/app/app` | 22.8 ± 0.9 | 21.7 | 25.5 | 1.65 ± 0.11 |
+| `python3.8 ./app.py` | 13.8 ± 0.8 | 12.9 | 17.8 | 1.00 |
+
+```sh
+Summary
+  'python3.8 ./app.py' ran
+    1.65 ± 0.11 times faster than './dist/app/app'
+```
+
+По результатам заметно, что бинарник, сгенерированный `pyinstaller`ом
+в полтора раза медленее обычного интерпретатора python'а.
 
 ### pyoxidizer
 
-[PyOxidizer](https://github.com/indygreg/PyOxidizer) отличается тем, что не распаковывает ресурсы во временную директорию, а использует их
-прямо из бинарника, включая интерпретатор. Получаем отличную производительность на запуск:
+[PyOxidizer](https://github.com/indygreg/PyOxidizer) отличается тем,
+что не распаковывает ресурсы во временную директорию, а использует их
+прямо из бинарника, включая интерпретатор, что должно обеспечить отличную производительность.
+
+Соберём тот же самый пример приложения через pyoxidizer:
 ```sh
-$  hyperfine "./build/x86_64-unknown-linux-gnu/debug/install/test" "python3.8 ./test.py" --warmup 10
-Benchmark 1: ./build/x86_64-unknown-linux-gnu/debug/install/test
- Time (mean ± ): 102.1 ms ± 3.3 ms [User: 95.8 ms, System: 6.2 ms]
- Range (min … max): 96.6 ms … 107.5 ms 29 runs
-Benchmark 2: python3.8 ./test.py
- Time (mean ± ): 95.6 ms ± 3.0 ms [User: 87.1 ms, System: 8.5 ms]
- Range (min … max): 93.4 ms … 111.1 ms 31 runs
-Summary
- 'python3.8 ./test.py' ran 1.07 ± 0.05 times faster than './build/x86_64-unknown-linux-gnu/debug/install/test'
+╰─❯ pip install -U pyoxidizer
+
+╰─❯ pyoxidizer init-config-file example
+
+╰─❯ cd example
+
+╰─❯ echo "print('Hello world')" > ./app.py
+
+╰─❯ vim pyoxidizer.bzl
+// добавить строчку в конец функции make_exe
+python_config.run_filename = "./app.py"
+
+╰─❯ pyoxidizer build
+...
+
+╰─❯ file ./build/x86_64-unknown-linux-gnu/debug/install/example
+./build/x86_64-unknown-linux-gnu/debug/install/example: ELF 64-bit LSB shared object, x86-64
 ```
 
-Теоретически, pyoxidized-бинарник может работать быстрее обычного python'а: такое можно получить на проекте с большим количеством файлов,
-где импорты с диска будут медленнее машинерии и импортов из памяти. Почитать об этом можно [в посте одного из разработчиков pyoxidizer'а](https://gregoryszorc.com/blog/2018/12/28/faster-in-memory-python-module-importing/).
+Сравним производительность полученного бинарника с голым интерпретатором:
+```sh
+╰─❯ hyperfine "./.../example" "python3.8 ./app.py" --warmup 10
+```
 
-Далее будем рассматривать именно pyoxidizer.
+<div style="font-size:30px">
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative |
+|:---|---:|---:|---:|---:|
+| `./.../example` | 15.2 ± 0.8 | 14.3 | 20.5 | 1.10 ± 0.08 |
+| `python3.8 ./app.py` | 13.8 ± 0.6 | 12.9 | 16.9 | 1.00 |
+</div>
+
+```sh
+Summary
+  'python3.8 ./app.py' ran
+    1.10 ± 0.08 times faster than './build/x86_64-unknown-linux-gnu/debug/install/example'
+```
+
+Намного лучше, чем с pyinstaller'ом.
+
+Можно выжать и больше производительности, например в случае с большим количеством импортов.
+Почитать об этом можно
+[в статье одного из разработчиков pyoxidizer'а](https://gregoryszorc.com/blog/2018/12/28/faster-in-memory-python-module-importing/),
+где автор проверял производительность при помощи импортирования почти всей `stdlib`:
+```sh
+ pyenv installed CPython 3.7.2
+
+# Cold disk cache.
+$ time ~/.pyenv/versions/3.7.2/bin/python < import_stdlib.py
+real   0m0.405s
+user   0m0.165s
+sys    0m0.065s
+
+# Hot disk cache.
+$ time ~/.pyenv/versions/3.7.2/bin/python < import_stdlib.py
+real   0m0.193s
+user   0m0.161s
+sys    0m0.032s
+
+# PyOxidizer with PGO CPython 3.7.2
+
+# Cold disk cache.
+$ time target/release/pyapp < import_stdlib.py
+real   0m0.227s
+user   0m0.145s
+sys    0m0.016s
+
+# Hot disk cache.
+$ time target/release/pyapp < import_stdlib.py
+real   0m0.152s
+user   0m0.136s
+sys    0m0.016s
+```
+
+Посмотрим подробнее на PyOxidizer.
 
 ## Перекись питона
 
-PyOxidizer --- набор модулей, написанных на [модном, стильном, молодёжном rust'е](https://www.rust-lang.org/), 
-которые позволяют управлять интерпретатором python'а.
+PyOxidizer --- довольно молодой проект, написанный на [модном, стильном, молодёжном rust'е](https://www.rust-lang.org/).
+Состоит из набора модулей, позволяющих встраивать интерпретатор python'а в rust-код, управлять им
+и паковать ресурсы в бинарный файл.
 
-Насколько мне известно, развитие в эту сторону началось с [inline_python](https://github.com/fusion-engineering/inline-python), 
+Насколько мне известно, развитие встроенного в Rust интерпретатора Python'а началось с
+пакета [inline_python](https://github.com/fusion-engineering/inline-python),
 который позволял инлайнить python-скрипты прямо в rust-код:
 ```rust
 use inline_python::python;
@@ -156,8 +234,8 @@ fn main() {
 ```
 
 Под капотом он использует [pyo3](https://github.com/PyO3/pyo3) --- библиотеку для связи python'а и rust'а.
-Этот же движок используется и в [pyembed](https://pyoxidizer.readthedocs.io/en/stable/pyembed.html) --- модуле pyoxidizer'а,
-реализующем управление интерпретатором python'а:
+Этот же движок используется и в [pyembed](https://pyoxidizer.readthedocs.io/en/stable/pyembed.html),
+который входит в состав pyoxidizer'а и отвечает за управление интерпретатором:
 ```rust
 fn do_it(interpreter: &MainPythonInterpreter) -> {
     interpreter.with_gil(|py| {
@@ -169,11 +247,11 @@ fn do_it(interpreter: &MainPythonInterpreter) -> {
 }
 ```
 
-Ещё одна важная часть pyoxidizer'а --- [oxidized_import](https://pyoxidizer.readthedocs.io/en/stable/oxidized_importer.html), кастомный
-резолвер импортов, реализующий загрузку ресурсов (в том числе из памяти), их сканирование и сериализацию.
+[oxidized_import](https://pyoxidizer.readthedocs.io/en/stable/oxidized_importer.html) --- кастомный
+движок импортов, реализующий загрузку ресурсов (в том числе из памяти), их сканирование и сериализацию.
 
 Для создания standalone-бинарников используется непосредственно [pyoxidizer](https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer.html),
-комбинирующий в себе pyembed и oxidized_import. 
+комбинирующий в себе [pyembed](https://pyoxidizer.readthedocs.io/en/stable/pyembed.html) и [oxidized_import](https://pyoxidizer.readthedocs.io/en/stable/oxidized_importer.html).
 
 [В документации](https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_overview.html#how-it-works) описано, как это работает.
 Краткий и очень вольный пересказ:
@@ -181,12 +259,11 @@ fn do_it(interpreter: &MainPythonInterpreter) -> {
 * собирается архив с исходниками и зависимостями python-утилиты;
 * из `pyembed` и архива ресурсов собирается готовый бинарник.
 
-Машинерия pyoxidizer'а достаётся нам не бесплатно --- есть пара загвоздок в виде загрузки не-питон-ресурсов и C-модулей.
-
 ### Загрузка ресурсов
 
-В стандартном python'е для загрузки ресурсов с диска --- например, шаблонов, данных, изображений и etc. --- используется 
-глобальная переменная `__file__`, указывающая на путь к текущему файлу в системе:
+В стандартном python'е для загрузки ресурсов с диска ---
+например, шаблонов, данных, изображений и etc. ---
+часто используется глобальная переменная `__file__`, указывающая на путь к текущему файлу в системе:
 ```python
 def get_resource(name):
     """Return a file handle on a named resource next to this module."""
@@ -196,10 +273,9 @@ def get_resource(name):
     return open(resource_path, 'rb')
 ```
 
-Однако, с этой переменной есть проблемы:
+С этой переменной есть некоторые проблемы --- официальная документация
+говорит о том, что в определённых случаях `__file__` не будет задан:
 >The pathname of the file from which the module was loaded, if it was loaded from a file. The `__file__` attribute may be missing for certain types of modules, such as C modules that are statically linked into the interpreter. For extension modules loaded dynamically from a shared library, it’s the pathname of the shared library file.
-
-То есть, даже официальная документация говорит, что `__file__` может быть не задан.
 
 В случае с pyoxidizer'ом, `__file__` теряет весь свой смысл, т.к. модули загружаются из памяти.
 Заметки из [документации pyoxidizer'а](https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_technotes.html):
@@ -227,16 +303,53 @@ Pyoxidizer [поддерживает](https://pyoxidizer.readthedocs.io/en/v0.7.
 
 Ещё немного инфы есть в [packaging pitfals](https://pyoxidizer.readthedocs.io/en/v0.7.0/packaging_pitfalls.html#c-and-other-native-extension-modules).
 
-### Пример использования 
+### дистрибутивы python'а
 
-***TODO***
+*Рекомендуются* специальные [дистрибутивы](https://python-build-standalone.readthedocs.io/en/latest/),
+подготовленные для максимальной портируемости.
+У них есть свои [проблемы и ограничения](https://python-build-standalone.readthedocs.io/en/latest/quirks.html), такие как:
+* Backspace Key Doesn’t work in Python REPL
+* Windows Static Distributions are Extremely Brittle
+* Static Linking of musl libc Prevents Extension Module Library Loading
+* Incompatibility with PyQt on Linux
 
-# Бонус: αcτµαlly αcτµαlly pδrταblε python
+PyOxidizer заявляет, что содержит workarounds для них, но не перечисляет конкретно.
 
-Можем ли мы пойти против бога и создать бинарник python-утилиты, который запускался бы *везде*? И на BSD, и на Unix, и на Windows?
-В теории, можем.
+# Выводы
 
-Есть штука под названием [ape](https://justine.lol/ape.html), позволяющая генерировать бинарники-полиглоты, запускающиеся практически везде.
+Кратко просуммирую написанное выше:
 
-А ещё есть [Python is actually portable](https://ahgamut.github.io/2021/07/13/ape-python/) и [Rust is actually portable](https://ahgamut.github.io/2022/07/27/ape-rust-example/), которые позволяют создавать универсальные бинарники python'а и rust'а. 
-С этими знаниями никто не в силах помешать нам сделать универсальный бинарник python'а и использовать его в универсальном бинарнике rust'а, но у меня до сих пор не дошли до этого руки. 
+* Кроме sdist/bdist есть другие варианты.
+* Запаковать приложение в один файл - реально.
+* PyInstaller - старый и проверенный.
+* PyOxidizer - новый и модный.
+    * И быстрый!
+    * Можно разобрать на части и использовать по отдельности.
+    * Есть некоторые детали при использовании.
+
+# Ссылки
+
+* [Russell Keith-Magee - Keynote - PyCon 2019](https://youtu.be/ftP5BQh1-YM?t=2033)
+* [cx-freeze](https://cx-freeze.readthedocs.io/en/latest/)
+* [exxo](https://github.com/mbachry/exxo)
+* [pyo3](https://github.com/PyO3/pyo3)
+* [py2exe](https://www.py2exe.org/)
+* [bbfreeze](https://pypi.org/project/bbfreeze/)
+* [py2app](https://py2app.readthedocs.io/en/latest/)
+* [Self-extracting tar](https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11)
+* [PyInstaller](https://pyinstaller.org/)
+* [PyInstaller - How it works](https://pyinstaller.org/en/stable/operating-mode.html)
+* [PyOxidizer](https://github.com/indygreg/PyOxidizer)
+* [inline_python](https://github.com/fusion-engineering/inline-python)
+* [Faster In-Memory Python Module Importing](https://gregoryszorc.com/blog/2018/12/28/faster-in-memory-python-module-importing/)
+* [PyOxidizer - oxidized_import](https://pyoxidizer.readthedocs.io/en/stable/oxidized_importer.html)
+* [PyOxidizer - pyembed](https://pyoxidizer.readthedocs.io/en/stable/pyembed.html)
+* [PyOxidizer - pyoxidizer](https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer.html)
+* [PyOxidizer - Overview](https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_overview.html)
+* [PyOxidizer - Tech notes](https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_technotes.html)
+* [PyOxidizer - Packaging pitfalls](https://pyoxidizer.readthedocs.io/en/v0.7.0/packaging_pitfalls.html)
+* [PyOxidizer - Packaging resources](https://pyoxidizer.readthedocs.io/en/v0.7.0/packaging_resource_files.html)
+* [PyOxidizer - Status](https://pyoxidizer.readthedocs.io/en/v0.7.0/status.html)
+* [Python standalone](https://python-build-standalone.readthedocs.io/en/latest/)
+* [Python standalone - Quirks](https://python-build-standalone.readthedocs.io/en/latest/quirks.html)
+* [Rust language](https://www.rust-lang.org/)
