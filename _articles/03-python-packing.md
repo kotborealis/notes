@@ -22,8 +22,6 @@ Wheel и Egg (оба относятся к build distributions).
 не-python разработчику, или вообще не разработчику: надо установить python определённой версии,
 установить соответствующий pip, подумать о возможных конфликтах зависимостей и т.д.
 
-В контексте python-приложений этот вопрос считается в целом не решённым.
-
 ## Нетрадиционные варианты
 
 Рассмотрим нетрадиционные варианты поставки python-приложений.
@@ -303,7 +301,7 @@ Pyoxidizer [поддерживает](https://pyoxidizer.readthedocs.io/en/v0.7.
 
 Ещё немного инфы есть в [packaging pitfals](https://pyoxidizer.readthedocs.io/en/v0.7.0/packaging_pitfalls.html#c-and-other-native-extension-modules).
 
-### дистрибутивы python'а
+### Дистрибутивы python'а
 
 *Рекомендуются* специальные [дистрибутивы](https://python-build-standalone.readthedocs.io/en/latest/),
 подготовленные для максимальной портируемости.
