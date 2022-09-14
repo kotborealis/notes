@@ -407,7 +407,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
     #article-content-container .gist-embedded td { border: 0px; }
 </style>
 <div class="gist-embedded">
-<pre><code>&lt;script src=&quot;https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11.js&quot;&gt;&lt;/script&gt;</code></pre>
+<script src="https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11.js" data-external="1"></script>
 </div>
 <p>Рассмотрим уже готовые реализации паковщиков python-приложений.</p>
 <h2>Паковщики</h2>
@@ -484,17 +484,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 <h3>pyinstaller</h3>
 <p><a href="https://pyinstaller.org/">pyinstaller</a> работает как классический self-extracting archive: при запуске бинарника <a href="(https://pyinstaller.org/en/stable/operating-mode.html#how-the-one-file-program-works)">он распаковывает ресурсы в <code>%tmp%</code></a>, запускает интерпретатор с правильными путями, схлопывается и подчищает за собой мусор. Это влечёт за собой проблемы с производительностью при запуске приложения: каждый раз мучать диск распаковкой ресурсов - дорого.</p>
 <p>Соберём пример приложения с помощью <code>pyinstaller</code>’а:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>╰─❯ <span class="ex">pip</span> install -U pyinstaller</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a>╰─❯ <span class="bu">echo</span> <span class="st">&quot;print(&#39;Hello world&#39;)&quot;</span> <span class="op">&gt;</span> ./app.py</span>
-<span id="cb2-4"><a href="#cb2-4"></a></span>
-<span id="cb2-5"><a href="#cb2-5"></a>╰─❯ <span class="ex">pyinstaller</span> ./app.py</span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="ex">...</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a></span>
-<span id="cb2-8"><a href="#cb2-8"></a>╰─❯ <span class="fu">file</span> ./dist/app/app</span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="ex">./dist/app</span>/app: <span class="ex">ELF</span> 64-bit LSB executable, x86-64...</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>╰─❯ <span class="ex">pip</span> install -U pyinstaller</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>╰─❯ <span class="bu">echo</span> <span class="st">&quot;print(&#39;Hello world&#39;)&quot;</span> <span class="op">&gt;</span> ./app.py</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a>╰─❯ <span class="ex">pyinstaller</span> ./app.py</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="ex">...</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a>╰─❯ <span class="fu">file</span> ./dist/app/app</span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="ex">./dist/app</span>/app: <span class="ex">ELF</span> 64-bit LSB executable, x86-64...</span></code></pre></div>
 <p>Проверим производительность полученного бинарного файла, по сравнению с обычным python’ом:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>╰─❯ <span class="ex">hyperfine</span> <span class="st">&quot;./dist/app/app&quot;</span> <span class="st">&quot;python3.8 ./app.py&quot;</span> --warmup 10</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>╰─❯ <span class="ex">hyperfine</span> <span class="st">&quot;./dist/app/app&quot;</span> <span class="st">&quot;python3.8 ./app.py&quot;</span> --warmup 10</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -522,32 +522,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">Summary</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="st">&#39;python3.8 ./app.py&#39;</span> <span class="ex">ran</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>    <span class="ex">1.65</span> ± 0.11 times faster than <span class="st">&#39;./dist/app/app&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">Summary</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="st">&#39;python3.8 ./app.py&#39;</span> <span class="ex">ran</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="ex">1.65</span> ± 0.11 times faster than <span class="st">&#39;./dist/app/app&#39;</span></span></code></pre></div>
 <p>По результатам заметно, что бинарник, сгенерированный <code>pyinstaller</code>ом в полтора раза медленее обычного интерпретатора python’а.</p>
 <h3>pyoxidizer</h3>
 <p><a href="https://github.com/indygreg/PyOxidizer">PyOxidizer</a> отличается тем, что не распаковывает ресурсы во временную директорию, а использует их прямо из бинарника, включая интерпретатор, что должно обеспечить отличную производительность.</p>
 <p>Соберём тот же самый пример приложения через pyoxidizer:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>╰─❯ <span class="ex">pip</span> install -U pyoxidizer</span>
-<span id="cb5-2"><a href="#cb5-2"></a></span>
-<span id="cb5-3"><a href="#cb5-3"></a>╰─❯ <span class="ex">pyoxidizer</span> init-config-file example</span>
-<span id="cb5-4"><a href="#cb5-4"></a></span>
-<span id="cb5-5"><a href="#cb5-5"></a>╰─❯ <span class="bu">cd</span> example</span>
-<span id="cb5-6"><a href="#cb5-6"></a></span>
-<span id="cb5-7"><a href="#cb5-7"></a>╰─❯ <span class="bu">echo</span> <span class="st">&quot;print(&#39;Hello world&#39;)&quot;</span> <span class="op">&gt;</span> ./app.py</span>
-<span id="cb5-8"><a href="#cb5-8"></a></span>
-<span id="cb5-9"><a href="#cb5-9"></a>╰─❯ <span class="ex">vim</span> pyoxidizer.bzl</span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="ex">//</span> добавить строчку в конец функции make_exe</span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="ex">python_config.run_filename</span> = <span class="st">&quot;./app.py&quot;</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a></span>
-<span id="cb5-13"><a href="#cb5-13"></a>╰─❯ <span class="ex">pyoxidizer</span> build</span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="ex">...</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a></span>
-<span id="cb5-16"><a href="#cb5-16"></a>╰─❯ <span class="fu">file</span> ./build/x86_64-unknown-linux-gnu/debug/install/example</span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="ex">./build/x86_64-unknown-linux-gnu/debug/install</span>/example: <span class="ex">ELF</span> 64-bit LSB shared object, x86-64</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>╰─❯ <span class="ex">pip</span> install -U pyoxidizer</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>╰─❯ <span class="ex">pyoxidizer</span> init-config-file example</span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a>╰─❯ <span class="bu">cd</span> example</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a>╰─❯ <span class="bu">echo</span> <span class="st">&quot;print(&#39;Hello world&#39;)&quot;</span> <span class="op">&gt;</span> ./app.py</span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a>╰─❯ <span class="ex">vim</span> pyoxidizer.bzl</span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="ex">//</span> добавить строчку в конец функции make_exe</span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="ex">python_config.run_filename</span> = <span class="st">&quot;./app.py&quot;</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a></span>
+<span id="cb4-13"><a href="#cb4-13"></a>╰─❯ <span class="ex">pyoxidizer</span> build</span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="ex">...</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a></span>
+<span id="cb4-16"><a href="#cb4-16"></a>╰─❯ <span class="fu">file</span> ./build/x86_64-unknown-linux-gnu/debug/install/example</span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="ex">./build/x86_64-unknown-linux-gnu/debug/install</span>/example: <span class="ex">ELF</span> 64-bit LSB shared object, x86-64</span></code></pre></div>
 <p>Сравним производительность полученного бинарника с голым интерпретатором:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>╰─❯ <span class="ex">hyperfine</span> <span class="st">&quot;./.../example&quot;</span> <span class="st">&quot;python3.8 ./app.py&quot;</span> --warmup 10</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>╰─❯ <span class="ex">hyperfine</span> <span class="st">&quot;./.../example&quot;</span> <span class="st">&quot;python3.8 ./app.py&quot;</span> --warmup 10</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -575,82 +575,82 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">Summary</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>  <span class="st">&#39;python3.8 ./app.py&#39;</span> <span class="ex">ran</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>    <span class="ex">1.10</span> ± 0.08 times faster than <span class="st">&#39;./build/x86_64-unknown-linux-gnu/debug/install/example&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">Summary</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="st">&#39;python3.8 ./app.py&#39;</span> <span class="ex">ran</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="ex">1.10</span> ± 0.08 times faster than <span class="st">&#39;./build/x86_64-unknown-linux-gnu/debug/install/example&#39;</span></span></code></pre></div>
 <p>Намного лучше, чем с pyinstaller’ом.</p>
 <p>Можно выжать и больше производительности, например в случае с большим количеством импортов. Почитать об этом можно <a href="https://gregoryszorc.com/blog/2018/12/28/faster-in-memory-python-module-importing/">в статье одного из разработчиков pyoxidizer’а</a>, где автор проверял производительность при помощи импортирования почти всей <code>stdlib</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a> <span class="ex">pyenv</span> installed CPython 3.7.2</span>
-<span id="cb8-2"><a href="#cb8-2"></a></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="co"># Cold disk cache.</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>$ <span class="bu">time</span> ~/.pyenv/versions/3.7.2/bin/python <span class="op">&lt;</span> import_stdlib.py</span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="ex">real</span>   0m0.405s</span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="ex">user</span>   0m0.165s</span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="ex">sys</span>    0m0.065s</span>
-<span id="cb8-8"><a href="#cb8-8"></a></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co"># Hot disk cache.</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a>$ <span class="bu">time</span> ~/.pyenv/versions/3.7.2/bin/python <span class="op">&lt;</span> import_stdlib.py</span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="ex">real</span>   0m0.193s</span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="ex">user</span>   0m0.161s</span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="ex">sys</span>    0m0.032s</span>
-<span id="cb8-14"><a href="#cb8-14"></a></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co"># PyOxidizer with PGO CPython 3.7.2</span></span>
-<span id="cb8-16"><a href="#cb8-16"></a></span>
-<span id="cb8-17"><a href="#cb8-17"></a><span class="co"># Cold disk cache.</span></span>
-<span id="cb8-18"><a href="#cb8-18"></a>$ <span class="bu">time</span> target/release/pyapp <span class="op">&lt;</span> import_stdlib.py</span>
-<span id="cb8-19"><a href="#cb8-19"></a><span class="ex">real</span>   0m0.227s</span>
-<span id="cb8-20"><a href="#cb8-20"></a><span class="ex">user</span>   0m0.145s</span>
-<span id="cb8-21"><a href="#cb8-21"></a><span class="ex">sys</span>    0m0.016s</span>
-<span id="cb8-22"><a href="#cb8-22"></a></span>
-<span id="cb8-23"><a href="#cb8-23"></a><span class="co"># Hot disk cache.</span></span>
-<span id="cb8-24"><a href="#cb8-24"></a>$ <span class="bu">time</span> target/release/pyapp <span class="op">&lt;</span> import_stdlib.py</span>
-<span id="cb8-25"><a href="#cb8-25"></a><span class="ex">real</span>   0m0.152s</span>
-<span id="cb8-26"><a href="#cb8-26"></a><span class="ex">user</span>   0m0.136s</span>
-<span id="cb8-27"><a href="#cb8-27"></a><span class="ex">sys</span>    0m0.016s</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a> <span class="ex">pyenv</span> installed CPython 3.7.2</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co"># Cold disk cache.</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>$ <span class="bu">time</span> ~/.pyenv/versions/3.7.2/bin/python <span class="op">&lt;</span> import_stdlib.py</span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="ex">real</span>   0m0.405s</span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="ex">user</span>   0m0.165s</span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="ex">sys</span>    0m0.065s</span>
+<span id="cb7-8"><a href="#cb7-8"></a></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="co"># Hot disk cache.</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>$ <span class="bu">time</span> ~/.pyenv/versions/3.7.2/bin/python <span class="op">&lt;</span> import_stdlib.py</span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="ex">real</span>   0m0.193s</span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="ex">user</span>   0m0.161s</span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="ex">sys</span>    0m0.032s</span>
+<span id="cb7-14"><a href="#cb7-14"></a></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="co"># PyOxidizer with PGO CPython 3.7.2</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="co"># Cold disk cache.</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a>$ <span class="bu">time</span> target/release/pyapp <span class="op">&lt;</span> import_stdlib.py</span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="ex">real</span>   0m0.227s</span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="ex">user</span>   0m0.145s</span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="ex">sys</span>    0m0.016s</span>
+<span id="cb7-22"><a href="#cb7-22"></a></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="co"># Hot disk cache.</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a>$ <span class="bu">time</span> target/release/pyapp <span class="op">&lt;</span> import_stdlib.py</span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="ex">real</span>   0m0.152s</span>
+<span id="cb7-26"><a href="#cb7-26"></a><span class="ex">user</span>   0m0.136s</span>
+<span id="cb7-27"><a href="#cb7-27"></a><span class="ex">sys</span>    0m0.016s</span></code></pre></div>
 <p>Посмотрим подробнее на PyOxidizer.</p>
 <h2>Перекись питона</h2>
 <p>PyOxidizer — довольно молодой проект, написанный на <a href="https://www.rust-lang.org/">модном, стильном, молодёжном rust’е</a>. Состоит из набора модулей, позволяющих встраивать интерпретатор python’а в rust-код, управлять им и паковать ресурсы в бинарный файл.</p>
 <p>Насколько мне известно, развитие встроенного в Rust интерпретатора Python’а началось с пакета <a href="https://github.com/fusion-engineering/inline-python">inline_python</a>, который позволял инлайнить python-скрипты прямо в rust-код:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">use</span> <span class="pp">inline_python::</span>python<span class="op">;</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>    <span class="kw">let</span> who <span class="op">=</span> <span class="st">&quot;world&quot;</span><span class="op">;</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a>    <span class="kw">let</span> n <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a>    <span class="pp">python!</span> <span class="op">{</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a>        <span class="kw">for</span> i <span class="kw">in</span> range(<span class="ot">&#39;n</span>)<span class="op">:</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a>            print(i<span class="op">,</span> <span class="st">&quot;Hello&quot;</span><span class="op">,</span> <span class="ot">&#39;who</span>)</span>
-<span id="cb9-9"><a href="#cb9-9"></a>        print(<span class="st">&quot;Goodbye&quot;</span>)</span>
-<span id="cb9-10"><a href="#cb9-10"></a>    <span class="op">}</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">use</span> <span class="pp">inline_python::</span>python<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="kw">let</span> who <span class="op">=</span> <span class="st">&quot;world&quot;</span><span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>    <span class="kw">let</span> n <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="pp">python!</span> <span class="op">{</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>        <span class="kw">for</span> i <span class="kw">in</span> range(<span class="ot">&#39;n</span>)<span class="op">:</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>            print(i<span class="op">,</span> <span class="st">&quot;Hello&quot;</span><span class="op">,</span> <span class="ot">&#39;who</span>)</span>
+<span id="cb8-9"><a href="#cb8-9"></a>        print(<span class="st">&quot;Goodbye&quot;</span>)</span>
+<span id="cb8-10"><a href="#cb8-10"></a>    <span class="op">}</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="op">}</span></span></code></pre></div>
 <p>Под капотом он использует <a href="https://github.com/PyO3/pyo3">pyo3</a> — библиотеку для связи python’а и rust’а. Этот же движок используется и в <a href="https://pyoxidizer.readthedocs.io/en/stable/pyembed.html">pyembed</a>, который входит в состав pyoxidizer’а и отвечает за управление интерпретатором:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">fn</span> do_it(interpreter<span class="op">:</span> <span class="op">&amp;</span>MainPythonInterpreter) <span class="op">-&gt;</span> <span class="op">{</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>    interpreter<span class="op">.</span>with_gil(<span class="op">|</span>py<span class="op">|</span> <span class="op">{</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a>         <span class="kw">match</span> py<span class="op">.</span>eval(<span class="st">&quot;print(&#39;hello, world&#39;)&quot;</span>) <span class="op">{</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>            <span class="cn">Ok</span>(_) <span class="op">=&gt;</span> print(<span class="st">&quot;python code executed successfully&quot;</span>)<span class="op">,</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a>            <span class="cn">Err</span>(e) <span class="op">=&gt;</span> print(<span class="st">&quot;python error: {:?}&quot;</span><span class="op">,</span> e)<span class="op">,</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a>        <span class="op">}</span></span>
-<span id="cb10-7"><a href="#cb10-7"></a>    <span class="op">}</span>)<span class="op">;</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">fn</span> do_it(interpreter<span class="op">:</span> <span class="op">&amp;</span>MainPythonInterpreter) <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>    interpreter<span class="op">.</span>with_gil(<span class="op">|</span>py<span class="op">|</span> <span class="op">{</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>         <span class="kw">match</span> py<span class="op">.</span>eval(<span class="st">&quot;print(&#39;hello, world&#39;)&quot;</span>) <span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>            <span class="cn">Ok</span>(_) <span class="op">=&gt;</span> print(<span class="st">&quot;python code executed successfully&quot;</span>)<span class="op">,</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>            <span class="cn">Err</span>(e) <span class="op">=&gt;</span> print(<span class="st">&quot;python error: {:?}&quot;</span><span class="op">,</span> e)<span class="op">,</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>        <span class="op">}</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>    <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="op">}</span></span></code></pre></div>
 <p><a href="https://pyoxidizer.readthedocs.io/en/stable/oxidized_importer.html">oxidized_import</a> — кастомный движок импортов, реализующий загрузку ресурсов (в том числе из памяти), их сканирование и сериализацию.</p>
 <p>Для создания standalone-бинарников используется непосредственно <a href="https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer.html">pyoxidizer</a>, комбинирующий в себе <a href="https://pyoxidizer.readthedocs.io/en/stable/pyembed.html">pyembed</a> и <a href="https://pyoxidizer.readthedocs.io/en/stable/oxidized_importer.html">oxidized_import</a>.</p>
 <p><a href="https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_overview.html#how-it-works">В документации</a> описано, как это работает. Краткий и очень вольный пересказ: * собирается <code>pyembed</code> с оптимизированным для встраивания бинарником интерпретатора; * собирается архив с исходниками и зависимостями python-утилиты; * из <code>pyembed</code> и архива ресурсов собирается готовый бинарник.</p>
 <h3>Загрузка ресурсов</h3>
 <p>В стандартном python’е для загрузки ресурсов с диска — например, шаблонов, данных, изображений и etc. — часто используется глобальная переменная <code>__file__</code>, указывающая на путь к текущему файлу в системе:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">def</span> get_resource(name):</span>
-<span id="cb11-2"><a href="#cb11-2"></a>    <span class="co">&quot;&quot;&quot;Return a file handle on a named resource next to this module.&quot;&quot;&quot;</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>    module_dir <span class="op">=</span> os.path.abspath(os.path.dirname(<span class="va">__file__</span>))</span>
-<span id="cb11-4"><a href="#cb11-4"></a>    resource_path <span class="op">=</span> os.path.join(module_dir, name)</span>
-<span id="cb11-5"><a href="#cb11-5"></a></span>
-<span id="cb11-6"><a href="#cb11-6"></a>    <span class="cf">return</span> <span class="bu">open</span>(resource_path, <span class="st">&#39;rb&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">def</span> get_resource(name):</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="co">&quot;&quot;&quot;Return a file handle on a named resource next to this module.&quot;&quot;&quot;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>    module_dir <span class="op">=</span> os.path.abspath(os.path.dirname(<span class="va">__file__</span>))</span>
+<span id="cb10-4"><a href="#cb10-4"></a>    resource_path <span class="op">=</span> os.path.join(module_dir, name)</span>
+<span id="cb10-5"><a href="#cb10-5"></a></span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="cf">return</span> <span class="bu">open</span>(resource_path, <span class="st">&#39;rb&#39;</span>)</span></code></pre></div>
 <p>С этой переменной есть некоторые проблемы — официальная документация говорит о том, что в определённых случаях <code>__file__</code> не будет задан: &gt;The pathname of the file from which the module was loaded, if it was loaded from a file. The <code>__file__</code> attribute may be missing for certain types of modules, such as C modules that are statically linked into the interpreter. For extension modules loaded dynamically from a shared library, it’s the pathname of the shared library file.</p>
 <p>В случае с pyoxidizer’ом, <code>__file__</code> теряет весь свой смысл, т.к. модули загружаются из памяти. Заметки из <a href="https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_technotes.html">документации pyoxidizer’а</a>: &gt;It isn’t clear whether <code>__file__</code> is actually required and what all is derived from existence of <code>__file__</code>. It also isn’t clear what <code>__file__</code> should be set to if it wouldn’t be a concrete filesystem path. Can <code>__file__</code> be virtual? Can it refer to a binary/archive containing the module?</p>
 <p>По умолчанию, <code>__file__</code> в pyoxidized-бинарниках не задан, и <a href="https://pyoxidizer.readthedocs.io/en/v0.7.0/packaging_resource_files.html#porting-code-to-modern-resources-apis">рекомендуется</a> использовать <code>ResourceAPI</code> (Python 3.7+):</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">def</span> get_resource(name):</span>
-<span id="cb12-2"><a href="#cb12-2"></a>    <span class="co">&quot;&quot;&quot;Return a file handle on a named resource next to this module.&quot;&quot;&quot;</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a>    <span class="co"># get_resource_reader() may not exist or may return None, which this</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>    <span class="co"># code doesn&#39;t handle.</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>    reader <span class="op">=</span> __loader__.get_resource_reader(<span class="va">__name__</span>)</span>
-<span id="cb12-6"><a href="#cb12-6"></a>    <span class="cf">return</span> reader.open_resource(name)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">def</span> get_resource(name):</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="co">&quot;&quot;&quot;Return a file handle on a named resource next to this module.&quot;&quot;&quot;</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>    <span class="co"># get_resource_reader() may not exist or may return None, which this</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="co"># code doesn&#39;t handle.</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>    reader <span class="op">=</span> __loader__.get_resource_reader(<span class="va">__name__</span>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a>    <span class="cf">return</span> reader.open_resource(name)</span></code></pre></div>
 <h3>C-расширения</h3>
 <p>Pyoxidizer <a href="https://pyoxidizer.readthedocs.io/en/v0.7.0/status.html#native-extension-modules">поддерживает</a> использование C-модулей, но с некоторыми пометками:</p>
 <ul>
