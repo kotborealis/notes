@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Паковка python-утилит в бинарник</title>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #444;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Паковка python-утилит в бинарник</h1>
+<p class="subtitle">Пакуем python-код в единый, независимый, standalone бинарник.</p>
+<p class="date">2022.08.30</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li>Паковка
+<ul>
+<li>Нетрадиционные варианты</li>
+</ul></li>
+<li>Паковка python-приложений в бинарный файл.
+<ul>
+<li>Паковщики
+<ul>
+<li>pyinstaller</li>
+<li>pyoxidizer</li>
+</ul></li>
+<li>Перекись питона
+<ul>
+<li>Загрузка ресурсов</li>
+<li>C-расширения</li>
+<li>Дистрибутивы python’а</li>
+</ul></li>
+</ul></li>
+<li>Выводы</li>
+<li>Ссылки</li>
+</ul>
+</nav>
+<h1>Паковка</h1>
+<p>Для того, чтобы любая утилита могла приносить какую-то пользу, её надо доставить конечному пользователю. В контексте python-приложений <a href="https://youtu.be/ftP5BQh1-YM?t=2033">этот вопрос можно считать не до конца закрытым</a>.</p>
+<p>Например, традиционно принято распространять модули через индекс PyPi. Этот индекс традиционно работает с тремя типами пакетов: source distributions, Wheel и Egg (оба относятся к build distributions). Все эти типы пакетов решают одну и ту же проблему дистрибуции приложения, и не понятно, какой из них лучше.</p>
+<p>Ещё больше проблем возникнет, если мы хотим отдать наше приложение не-python разработчику, или вообще не разработчику: надо установить python определённой версии, установить соответствующий pip, подумать о возможных конфликтах зависимостей и т.д.</p>
+<h2>Нетрадиционные варианты</h2>
+<p>Рассмотрим нетрадиционные варианты поставки python-приложений. Здесь перечисленны совсем не все (можно извращаться до бесконечности), а только интересные мне:</p>
+<ul>
+<li>VM с установленным приложением и его зависимостями:
+<ul>
+<li><blockquote>
+<p>we ship a whole fucking Windows VM to avoid problems with Python depencencies</p>
+</blockquote></li>
+<li>Стабильный и надёжный, но странный и избыточный вариант.</li>
+<li>Не везде могут быть ресурсы для виртуализации.</li>
+</ul></li>
+<li>Docker image с установленным приложением и его зависимостями:
+<ul>
+<li>Очень похоже на вариант с VM, но в более тонком виде.</li>
+<li>Docker так же не везде работает. Примеры: Astra Linux 1.4 и OpenVZ-виртуалки со старым ядром.</li>
+</ul></li>
+<li>Бинарный файл с приложением и его зависимостями.
+<ul>
+<li>В теории, самый удобный вариант: достаточно скачать и запустить.</li>
+<li>Не очевидно, как реализовать.</li>
+</ul></li>
+</ul>
+<p>Очевидно, вариант с бинарным файлом выглядит лучше остальных. Рассмотрим, как его можно реализовать на практике.</p>
+<h1>Паковка python-приложений в бинарный файл.</h1>
+<p>Для упаковки python-приложения в бинарный файл нам потребуется некая инфраструктура, которая запакует интерпретатор, приложение, его ресурсы и зависимости в единую сущность.</p>
+В <em>простейшем</em> случае можно обойтись <a href="https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11">bash-скриптом</a> с приписанным в конце tar-архивом:
+<style>
+    #article-content-container .gist-embedded td { border: 0px; }
+</style>
+<div class="gist-embedded">
+<pre><code>&lt;script src=&quot;https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11.js&quot;&gt;&lt;/script&gt;</code></pre>
+</div>
+<p>Рассмотрим уже готовые реализации паковщиков python-приложений.</p>
+<h2>Паковщики</h2>
+<p>В недрах Github’а можно найти несчётное количество реализаций паковки python-приложений, но надо выбрать несколько для сравнений. Основные критерии сравнения:</p>
+<ul>
+<li>Хочется живую реализацию, которая будет поддерживаться и развиваться.
+<ul>
+<li>Можно определить по времени последнего релиза и популярности в виде звёздочек на github’е.
+<ul>
+<li><em>(да, я понимаю, что количетсво звёздочек означает примерно ничего, но помогает как минимум отсортировать варианты)</em></li>
+</ul></li>
+</ul></li>
+<li>Реализация должна поддерживать как минимум основные платформы.
+<ul>
+<li>Нас интересует Window, Linux и опционально MacOs.</li>
+</ul></li>
+</ul>
+<p>Самые интересные находки:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Название</th>
+<th>Платформы</th>
+<th>Релиз</th>
+<th>⭐</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://pyinstaller.org/en/stable/">pyinstaller</a></td>
+<td>Win/macOS/Unix</td>
+<td>2022</td>
+<td>9.5k</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/indygreg/PyOxidizer">pyoxidizer</a></td>
+<td>Win/macOS/Unix</td>
+<td>2022</td>
+<td>4.2k</td>
+</tr>
+<tr class="odd">
+<td><a href="https://cx-freeze.readthedocs.io/en/latest/">cx-freeze</a></td>
+<td>Win/macOS/Unix</td>
+<td>2022</td>
+<td>956</td>
+</tr>
+<tr class="even">
+<td><a href="https://py2app.readthedocs.io/en/latest/">py2app</a></td>
+<td>macOS</td>
+<td>2022</td>
+<td>208</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.py2exe.org/">py2exe</a></td>
+<td>Win</td>
+<td>2022</td>
+<td>463</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/mbachry/exxo">exxo</a></td>
+<td>Unix</td>
+<td>2016</td>
+<td>460</td>
+</tr>
+<tr class="odd">
+<td><a href="https://pypi.org/project/bbfreeze/">bbfreeze</a></td>
+<td>Win/macOS/Unix</td>
+<td>2014</td>
+<td>92</td>
+</tr>
+</tbody>
+</table>
+<p>Под заданные критерии лучше всего подходят <a href="https://pyinstaller.org/en/stable/">pyinstaller</a> и <a href="https://github.com/indygreg/PyOxidizer">pyoxidizer</a>.</p>
+<h3>pyinstaller</h3>
+<p><a href="https://pyinstaller.org/">pyinstaller</a> работает как классический self-extracting archive: при запуске бинарника <a href="(https://pyinstaller.org/en/stable/operating-mode.html#how-the-one-file-program-works)">он распаковывает ресурсы в <code>%tmp%</code></a>, запускает интерпретатор с правильными путями, схлопывается и подчищает за собой мусор. Это влечёт за собой проблемы с производительностью при запуске приложения: каждый раз мучать диск распаковкой ресурсов - дорого.</p>
+<p>Соберём пример приложения с помощью <code>pyinstaller</code>’а:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>╰─❯ <span class="ex">pip</span> install -U pyinstaller</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>╰─❯ <span class="bu">echo</span> <span class="st">&quot;print(&#39;Hello world&#39;)&quot;</span> <span class="op">&gt;</span> ./app.py</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>╰─❯ <span class="ex">pyinstaller</span> ./app.py</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="ex">...</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a>╰─❯ <span class="fu">file</span> ./dist/app/app</span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="ex">./dist/app</span>/app: <span class="ex">ELF</span> 64-bit LSB executable, x86-64...</span></code></pre></div>
+<p>Проверим производительность полученного бинарного файла, по сравнению с обычным python’ом:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>╰─❯ <span class="ex">hyperfine</span> <span class="st">&quot;./dist/app/app&quot;</span> <span class="st">&quot;python3.8 ./app.py&quot;</span> --warmup 10</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Command</th>
+<th style="text-align: right;">Mean [ms]</th>
+<th style="text-align: right;">Min [ms]</th>
+<th style="text-align: right;">Max [ms]</th>
+<th style="text-align: right;">Relative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>./dist/app/app</code></td>
+<td style="text-align: right;">22.8 ± 0.9</td>
+<td style="text-align: right;">21.7</td>
+<td style="text-align: right;">25.5</td>
+<td style="text-align: right;">1.65 ± 0.11</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>python3.8 ./app.py</code></td>
+<td style="text-align: right;">13.8 ± 0.8</td>
+<td style="text-align: right;">12.9</td>
+<td style="text-align: right;">17.8</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">Summary</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="st">&#39;python3.8 ./app.py&#39;</span> <span class="ex">ran</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="ex">1.65</span> ± 0.11 times faster than <span class="st">&#39;./dist/app/app&#39;</span></span></code></pre></div>
+<p>По результатам заметно, что бинарник, сгенерированный <code>pyinstaller</code>ом в полтора раза медленее обычного интерпретатора python’а.</p>
+<h3>pyoxidizer</h3>
+<p><a href="https://github.com/indygreg/PyOxidizer">PyOxidizer</a> отличается тем, что не распаковывает ресурсы во временную директорию, а использует их прямо из бинарника, включая интерпретатор, что должно обеспечить отличную производительность.</p>
+<p>Соберём тот же самый пример приложения через pyoxidizer:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>╰─❯ <span class="ex">pip</span> install -U pyoxidizer</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a>╰─❯ <span class="ex">pyoxidizer</span> init-config-file example</span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a>╰─❯ <span class="bu">cd</span> example</span>
+<span id="cb5-6"><a href="#cb5-6"></a></span>
+<span id="cb5-7"><a href="#cb5-7"></a>╰─❯ <span class="bu">echo</span> <span class="st">&quot;print(&#39;Hello world&#39;)&quot;</span> <span class="op">&gt;</span> ./app.py</span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a>╰─❯ <span class="ex">vim</span> pyoxidizer.bzl</span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="ex">//</span> добавить строчку в конец функции make_exe</span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="ex">python_config.run_filename</span> = <span class="st">&quot;./app.py&quot;</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a></span>
+<span id="cb5-13"><a href="#cb5-13"></a>╰─❯ <span class="ex">pyoxidizer</span> build</span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="ex">...</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a></span>
+<span id="cb5-16"><a href="#cb5-16"></a>╰─❯ <span class="fu">file</span> ./build/x86_64-unknown-linux-gnu/debug/install/example</span>
+<span id="cb5-17"><a href="#cb5-17"></a><span class="ex">./build/x86_64-unknown-linux-gnu/debug/install</span>/example: <span class="ex">ELF</span> 64-bit LSB shared object, x86-64</span></code></pre></div>
+<p>Сравним производительность полученного бинарника с голым интерпретатором:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>╰─❯ <span class="ex">hyperfine</span> <span class="st">&quot;./.../example&quot;</span> <span class="st">&quot;python3.8 ./app.py&quot;</span> --warmup 10</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Command</th>
+<th style="text-align: right;">Mean [ms]</th>
+<th style="text-align: right;">Min [ms]</th>
+<th style="text-align: right;">Max [ms]</th>
+<th style="text-align: right;">Relative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>./.../example</code></td>
+<td style="text-align: right;">15.2 ± 0.8</td>
+<td style="text-align: right;">14.3</td>
+<td style="text-align: right;">20.5</td>
+<td style="text-align: right;">1.10 ± 0.08</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>python3.8 ./app.py</code></td>
+<td style="text-align: right;">13.8 ± 0.6</td>
+<td style="text-align: right;">12.9</td>
+<td style="text-align: right;">16.9</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">Summary</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="st">&#39;python3.8 ./app.py&#39;</span> <span class="ex">ran</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="ex">1.10</span> ± 0.08 times faster than <span class="st">&#39;./build/x86_64-unknown-linux-gnu/debug/install/example&#39;</span></span></code></pre></div>
+<p>Намного лучше, чем с pyinstaller’ом.</p>
+<p>Можно выжать и больше производительности, например в случае с большим количеством импортов. Почитать об этом можно <a href="https://gregoryszorc.com/blog/2018/12/28/faster-in-memory-python-module-importing/">в статье одного из разработчиков pyoxidizer’а</a>, где автор проверял производительность при помощи импортирования почти всей <code>stdlib</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a> <span class="ex">pyenv</span> installed CPython 3.7.2</span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co"># Cold disk cache.</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>$ <span class="bu">time</span> ~/.pyenv/versions/3.7.2/bin/python <span class="op">&lt;</span> import_stdlib.py</span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="ex">real</span>   0m0.405s</span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="ex">user</span>   0m0.165s</span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="ex">sys</span>    0m0.065s</span>
+<span id="cb8-8"><a href="#cb8-8"></a></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co"># Hot disk cache.</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a>$ <span class="bu">time</span> ~/.pyenv/versions/3.7.2/bin/python <span class="op">&lt;</span> import_stdlib.py</span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="ex">real</span>   0m0.193s</span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="ex">user</span>   0m0.161s</span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="ex">sys</span>    0m0.032s</span>
+<span id="cb8-14"><a href="#cb8-14"></a></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co"># PyOxidizer with PGO CPython 3.7.2</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="co"># Cold disk cache.</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a>$ <span class="bu">time</span> target/release/pyapp <span class="op">&lt;</span> import_stdlib.py</span>
+<span id="cb8-19"><a href="#cb8-19"></a><span class="ex">real</span>   0m0.227s</span>
+<span id="cb8-20"><a href="#cb8-20"></a><span class="ex">user</span>   0m0.145s</span>
+<span id="cb8-21"><a href="#cb8-21"></a><span class="ex">sys</span>    0m0.016s</span>
+<span id="cb8-22"><a href="#cb8-22"></a></span>
+<span id="cb8-23"><a href="#cb8-23"></a><span class="co"># Hot disk cache.</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a>$ <span class="bu">time</span> target/release/pyapp <span class="op">&lt;</span> import_stdlib.py</span>
+<span id="cb8-25"><a href="#cb8-25"></a><span class="ex">real</span>   0m0.152s</span>
+<span id="cb8-26"><a href="#cb8-26"></a><span class="ex">user</span>   0m0.136s</span>
+<span id="cb8-27"><a href="#cb8-27"></a><span class="ex">sys</span>    0m0.016s</span></code></pre></div>
+<p>Посмотрим подробнее на PyOxidizer.</p>
+<h2>Перекись питона</h2>
+<p>PyOxidizer — довольно молодой проект, написанный на <a href="https://www.rust-lang.org/">модном, стильном, молодёжном rust’е</a>. Состоит из набора модулей, позволяющих встраивать интерпретатор python’а в rust-код, управлять им и паковать ресурсы в бинарный файл.</p>
+<p>Насколько мне известно, развитие встроенного в Rust интерпретатора Python’а началось с пакета <a href="https://github.com/fusion-engineering/inline-python">inline_python</a>, который позволял инлайнить python-скрипты прямо в rust-код:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">use</span> <span class="pp">inline_python::</span>python<span class="op">;</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="kw">let</span> who <span class="op">=</span> <span class="st">&quot;world&quot;</span><span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="kw">let</span> n <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>    <span class="pp">python!</span> <span class="op">{</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>        <span class="kw">for</span> i <span class="kw">in</span> range(<span class="ot">&#39;n</span>)<span class="op">:</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>            print(i<span class="op">,</span> <span class="st">&quot;Hello&quot;</span><span class="op">,</span> <span class="ot">&#39;who</span>)</span>
+<span id="cb9-9"><a href="#cb9-9"></a>        print(<span class="st">&quot;Goodbye&quot;</span>)</span>
+<span id="cb9-10"><a href="#cb9-10"></a>    <span class="op">}</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="op">}</span></span></code></pre></div>
+<p>Под капотом он использует <a href="https://github.com/PyO3/pyo3">pyo3</a> — библиотеку для связи python’а и rust’а. Этот же движок используется и в <a href="https://pyoxidizer.readthedocs.io/en/stable/pyembed.html">pyembed</a>, который входит в состав pyoxidizer’а и отвечает за управление интерпретатором:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">fn</span> do_it(interpreter<span class="op">:</span> <span class="op">&amp;</span>MainPythonInterpreter) <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>    interpreter<span class="op">.</span>with_gil(<span class="op">|</span>py<span class="op">|</span> <span class="op">{</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>         <span class="kw">match</span> py<span class="op">.</span>eval(<span class="st">&quot;print(&#39;hello, world&#39;)&quot;</span>) <span class="op">{</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>            <span class="cn">Ok</span>(_) <span class="op">=&gt;</span> print(<span class="st">&quot;python code executed successfully&quot;</span>)<span class="op">,</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>            <span class="cn">Err</span>(e) <span class="op">=&gt;</span> print(<span class="st">&quot;python error: {:?}&quot;</span><span class="op">,</span> e)<span class="op">,</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>        <span class="op">}</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>    <span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="op">}</span></span></code></pre></div>
+<p><a href="https://pyoxidizer.readthedocs.io/en/stable/oxidized_importer.html">oxidized_import</a> — кастомный движок импортов, реализующий загрузку ресурсов (в том числе из памяти), их сканирование и сериализацию.</p>
+<p>Для создания standalone-бинарников используется непосредственно <a href="https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer.html">pyoxidizer</a>, комбинирующий в себе <a href="https://pyoxidizer.readthedocs.io/en/stable/pyembed.html">pyembed</a> и <a href="https://pyoxidizer.readthedocs.io/en/stable/oxidized_importer.html">oxidized_import</a>.</p>
+<p><a href="https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_overview.html#how-it-works">В документации</a> описано, как это работает. Краткий и очень вольный пересказ: * собирается <code>pyembed</code> с оптимизированным для встраивания бинарником интерпретатора; * собирается архив с исходниками и зависимостями python-утилиты; * из <code>pyembed</code> и архива ресурсов собирается готовый бинарник.</p>
+<h3>Загрузка ресурсов</h3>
+<p>В стандартном python’е для загрузки ресурсов с диска — например, шаблонов, данных, изображений и etc. — часто используется глобальная переменная <code>__file__</code>, указывающая на путь к текущему файлу в системе:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">def</span> get_resource(name):</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="co">&quot;&quot;&quot;Return a file handle on a named resource next to this module.&quot;&quot;&quot;</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>    module_dir <span class="op">=</span> os.path.abspath(os.path.dirname(<span class="va">__file__</span>))</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    resource_path <span class="op">=</span> os.path.join(module_dir, name)</span>
+<span id="cb11-5"><a href="#cb11-5"></a></span>
+<span id="cb11-6"><a href="#cb11-6"></a>    <span class="cf">return</span> <span class="bu">open</span>(resource_path, <span class="st">&#39;rb&#39;</span>)</span></code></pre></div>
+<p>С этой переменной есть некоторые проблемы — официальная документация говорит о том, что в определённых случаях <code>__file__</code> не будет задан: &gt;The pathname of the file from which the module was loaded, if it was loaded from a file. The <code>__file__</code> attribute may be missing for certain types of modules, such as C modules that are statically linked into the interpreter. For extension modules loaded dynamically from a shared library, it’s the pathname of the shared library file.</p>
+<p>В случае с pyoxidizer’ом, <code>__file__</code> теряет весь свой смысл, т.к. модули загружаются из памяти. Заметки из <a href="https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_technotes.html">документации pyoxidizer’а</a>: &gt;It isn’t clear whether <code>__file__</code> is actually required and what all is derived from existence of <code>__file__</code>. It also isn’t clear what <code>__file__</code> should be set to if it wouldn’t be a concrete filesystem path. Can <code>__file__</code> be virtual? Can it refer to a binary/archive containing the module?</p>
+<p>По умолчанию, <code>__file__</code> в pyoxidized-бинарниках не задан, и <a href="https://pyoxidizer.readthedocs.io/en/v0.7.0/packaging_resource_files.html#porting-code-to-modern-resources-apis">рекомендуется</a> использовать <code>ResourceAPI</code> (Python 3.7+):</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">def</span> get_resource(name):</span>
+<span id="cb12-2"><a href="#cb12-2"></a>    <span class="co">&quot;&quot;&quot;Return a file handle on a named resource next to this module.&quot;&quot;&quot;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="co"># get_resource_reader() may not exist or may return None, which this</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="co"># code doesn&#39;t handle.</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>    reader <span class="op">=</span> __loader__.get_resource_reader(<span class="va">__name__</span>)</span>
+<span id="cb12-6"><a href="#cb12-6"></a>    <span class="cf">return</span> reader.open_resource(name)</span></code></pre></div>
+<h3>C-расширения</h3>
+<p>Pyoxidizer <a href="https://pyoxidizer.readthedocs.io/en/v0.7.0/status.html#native-extension-modules">поддерживает</a> использование C-модулей, но с некоторыми пометками:</p>
+<ul>
+<li>Building C extensions to be embedded in the produced binary works for Windows, Linux, and macOS.</li>
+<li>Support for extension modules that link additional macOS frameworks not used by Python itself is not yet implemented (but should be easy to do).</li>
+<li>Support for cross-compiling extension modules (including to MUSL) does not work. (It may appear to work and break at linking or run-time.)</li>
+<li>We also do not yet provide a build environment for C extensions. So unexpected behavior could occur if e.g. a different compiler toolchain is used to build the C extensions from the one that produced the Python distribution.</li>
+</ul>
+<p>Ещё немного инфы есть в <a href="https://pyoxidizer.readthedocs.io/en/v0.7.0/packaging_pitfalls.html#c-and-other-native-extension-modules">packaging pitfals</a>.</p>
+<h3>Дистрибутивы python’а</h3>
+<p><em>Рекомендуются</em> специальные <a href="https://python-build-standalone.readthedocs.io/en/latest/">дистрибутивы</a>, подготовленные для максимальной портируемости. У них есть свои <a href="https://python-build-standalone.readthedocs.io/en/latest/quirks.html">проблемы и ограничения</a>, такие как: * Backspace Key Doesn’t work in Python REPL * Windows Static Distributions are Extremely Brittle * Static Linking of musl libc Prevents Extension Module Library Loading * Incompatibility with PyQt on Linux</p>
+<p>PyOxidizer заявляет, что содержит workarounds для них, но не перечисляет конкретно.</p>
+<h1>Выводы</h1>
+<p>Кратко просуммирую написанное выше:</p>
+<ul>
+<li>Кроме sdist/bdist есть другие варианты.</li>
+<li>Запаковать приложение в один файл - реально.</li>
+<li>PyInstaller - старый и проверенный.</li>
+<li>PyOxidizer - новый и модный.
+<ul>
+<li>И быстрый!</li>
+<li>Можно разобрать на части и использовать по отдельности.</li>
+<li>Есть некоторые детали при использовании.</li>
+</ul></li>
+</ul>
+<h1>Ссылки</h1>
+<ul>
+<li><a href="https://youtu.be/ftP5BQh1-YM?t=2033">Russell Keith-Magee - Keynote - PyCon 2019</a></li>
+<li><a href="https://cx-freeze.readthedocs.io/en/latest/">cx-freeze</a></li>
+<li><a href="https://github.com/mbachry/exxo">exxo</a></li>
+<li><a href="https://github.com/PyO3/pyo3">pyo3</a></li>
+<li><a href="https://www.py2exe.org/">py2exe</a></li>
+<li><a href="https://pypi.org/project/bbfreeze/">bbfreeze</a></li>
+<li><a href="https://py2app.readthedocs.io/en/latest/">py2app</a></li>
+<li><a href="https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11">Self-extracting tar</a></li>
+<li><a href="https://pyinstaller.org/">PyInstaller</a></li>
+<li><a href="https://pyinstaller.org/en/stable/operating-mode.html">PyInstaller - How it works</a></li>
+<li><a href="https://github.com/indygreg/PyOxidizer">PyOxidizer</a></li>
+<li><a href="https://github.com/fusion-engineering/inline-python">inline_python</a></li>
+<li><a href="https://gregoryszorc.com/blog/2018/12/28/faster-in-memory-python-module-importing/">Faster In-Memory Python Module Importing</a></li>
+<li><a href="https://pyoxidizer.readthedocs.io/en/stable/oxidized_importer.html">PyOxidizer - oxidized_import</a></li>
+<li><a href="https://pyoxidizer.readthedocs.io/en/stable/pyembed.html">PyOxidizer - pyembed</a></li>
+<li><a href="https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer.html">PyOxidizer - pyoxidizer</a></li>
+<li><a href="https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_overview.html">PyOxidizer - Overview</a></li>
+<li><a href="https://pyoxidizer.readthedocs.io/en/stable/pyoxidizer_technotes.html">PyOxidizer - Tech notes</a></li>
+<li><a href="https://pyoxidizer.readthedocs.io/en/v0.7.0/packaging_pitfalls.html">PyOxidizer - Packaging pitfalls</a></li>
+<li><a href="https://pyoxidizer.readthedocs.io/en/v0.7.0/packaging_resource_files.html">PyOxidizer - Packaging resources</a></li>
+<li><a href="https://pyoxidizer.readthedocs.io/en/v0.7.0/status.html">PyOxidizer - Status</a></li>
+<li><a href="https://python-build-standalone.readthedocs.io/en/latest/">Python standalone</a></li>
+<li><a href="https://python-build-standalone.readthedocs.io/en/latest/quirks.html">Python standalone - Quirks</a></li>
+<li><a href="https://www.rust-lang.org/">Rust language</a></li>
+</ul>
+</body>
+</html>

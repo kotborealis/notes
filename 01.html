@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Склеивание репозиториев</title>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #444;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Склеивание репозиториев</h1>
+<p class="subtitle">Объединение двух разных репозиториев в одну историю.</p>
+<p class="date">2022.08.19</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li>Склеивание двух репозиториев
+<ul>
+<li>How-to</li>
+</ul></li>
+</ul>
+</nav>
+<h1>Склеивание двух репозиториев</h1>
+<p>Предположим, что у нас есть два репозитория — <code>A</code> и <code>B</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>╭─ <span class="ex">~/git-glue/A</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>╰─❯ <span class="fu">git</span> log --oneline</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="ex">ae455c5</span> (HEAD -<span class="op">&gt;</span> master) <span class="ex">AN</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="ex">...</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="ex">dc62217</span> A2</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="ex">5e5ca47</span> A1</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>╭─ <span class="ex">~/git-glue/B</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>╰─❯ <span class="fu">git</span> log --oneline</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="ex">3ad0733</span> (HEAD -<span class="op">&gt;</span> master) <span class="ex">BN</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="ex">...</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="ex">e5f7713</span> B2</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="ex">a51a4e5</span> B1</span></code></pre></div>
+<p>Перед нами стоит задача — склеить эти два репозитория в один, наложив историю репозитория <code>B</code> на историю <code>A</code>.</p>
+<pre><code>A1 -&gt; A2 -&gt; ... -&gt; AN -&gt; B1 -&gt; B2 -&gt; ... -&gt; BN</code></pre>
+<p>Зачем? Такое может потребоваться по историческим причинам, чтобы подменить один репозиторий другим, не теряя историю коммитов в мастере.</p>
+<p>Это можно сделать с помощью <a href="https://git-scm.com/book/en/v2/Git-Tools-Replace">git-replace</a> и <a href="https://github.com/newren/git-filter-repo">git-filter-repo</a>: * git-replace поможет подменить родителя коммита; * git-filter-repo — альтернатива <a href="https://git-scm.com/docs/git-filter-branch">git-filter-branch</a> — перепишет историю с учётом подмены родителей.</p>
+<h2>How-to</h2>
+<p>Создадим репозиторий для склеивания и добавим в него исходные репозитории как новые <code>remote</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>╰─❯ <span class="fu">mkdir</span> C</span>
+<span id="cb4-2"><a href="#cb4-2"></a>╰─❯ <span class="bu">cd</span> C</span>
+<span id="cb4-3"><a href="#cb4-3"></a>╰─❯ <span class="fu">git</span> init</span>
+<span id="cb4-4"><a href="#cb4-4"></a>╰─❯ <span class="fu">git</span> remote add A ../A</span>
+<span id="cb4-5"><a href="#cb4-5"></a>╰─❯ <span class="fu">git</span> fetch A</span>
+<span id="cb4-6"><a href="#cb4-6"></a>╰─❯ <span class="fu">git</span> remote add B ../B</span>
+<span id="cb4-7"><a href="#cb4-7"></a>╰─❯ <span class="fu">git</span> fetch B</span></code></pre></div>
+<p>Создадим поверх коммита <code>AN</code> ‘шов’, куда будем приклеивать коммит <code>B1</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>╰─❯ <span class="fu">git</span> reset --hard A/master</span>
+<span id="cb5-2"><a href="#cb5-2"></a>╰─❯ <span class="fu">git</span> commit --allow-empty -m <span class="st">&quot;graft&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>[<span class="ex">master</span> a41820c] graft</span></code></pre></div>
+<p>Этот коммит необязателен, но с ним процесс становится понятнее и проще визуализируется.</p>
+<p>Теперь переключимся на коммиты репозитория <code>B</code> и подменим коммиту <code>B1</code> родителя на только что созданный шов:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>╰─❯ <span class="fu">git</span> reset --hard B/master</span>
+<span id="cb6-2"><a href="#cb6-2"></a>╰─❯ <span class="fu">git</span> replace --graft a51a4e5 a41820c</span></code></pre></div>
+<p>Что делает <code>replace --graft</code>? Из документации: &gt;Create a graft commit. A new commit is created with the same content as <commit> except that its parents will be [<parent>…​] instead of <commit>’s parents. A replacement ref is then created to replace <commit> with the newly created commit.</p>
+<p>То есть, <code>--graft</code> берёт указанный коммит <code>a51a4e5</code>, создаёт точно такой же от родителя <code>a41820c</code>, и подменяет им <code>a51a4e5</code>.</p>
+<p>Получаем в нашей ветке сшитые истории:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a>╭─ <span class="ex">~/git-glue/C</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>╰─❯ <span class="fu">git</span> log --oneline</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="ex">3ad0733</span> (HEAD -<span class="op">&gt;</span> master, B/master) <span class="ex">BN</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="ex">e5f7713</span> B2</span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="ex">a51a4e5</span> (replaced) <span class="ex">B1</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="ex">a41820c</span> graft</span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="ex">ae455c5</span> (A/master) <span class="ex">AN</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="ex">dc62217</span> A2</span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="ex">5e5ca47</span> A1</span></code></pre></div>
+<p>Результат <code>replace</code> с <code>--graft</code> лучше считать временным, он просто создаёт в <code>refs</code> ссылку с одного коммита на другой. Теперь надо преобразовать <code>replace --graft</code> в настоящий <code>replace</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a>╰─❯ <span class="fu">git</span> replace --convert-graft-file</span></code></pre></div>
+<p>Теперь перепишем историю с учётом склеенных коммитов через <code>git-filter-repo</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a>╰─❯ <span class="fu">git</span> filter-repo --replace-refs delete-no-add --no-ff --prune-empty never --prune-degenerate never</span></code></pre></div>
+<p>В аргументах <code>filter-repo</code> приведены флаги, которые <em>достаточно хорошо</em> перепишут историю, не теряя детей merge-коммитов и т.д.: * <code>--replace-refs delete-no-add</code> вычищает <code>replace</code> и делает их постоянными. * <code>--no-ff</code>, <code>--prune-empty never</code> и <code>--prune-degenerate never</code> позволяет сохранить все коммиты, даже пустые.</p>
+<p>После этого получим полноценную сшитую историю, которую через <code>--force</code> можно запушить поверх старой.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a>╰─❯ <span class="fu">git</span> log --oneline</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="ex">ed9c537</span> (HEAD -<span class="op">&gt;</span> master, B/master) <span class="ex">BN</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="ex">5f5ee21</span> B2</span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="ex">8f3da04</span> B1</span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="ex">a41820c</span> graft</span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="ex">ae455c5</span> (A/master) <span class="ex">AN</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="ex">dc62217</span> A2</span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="ex">5e5ca47</span> A1</span></code></pre></div>
+</body>
+</html>
