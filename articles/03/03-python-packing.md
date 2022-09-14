@@ -52,7 +52,7 @@ Wheel и Egg (оба относятся к build distributions).
     #article-content-container .gist-embedded td { border: 0px; }
 </style>
 <div class="gist-embedded">
-    <script src="https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11.js"></script>
+<script src="https://gist.github.com/ChrisCarini/d3e97c4bc7878524fa11.js" data-external="1"></script>
 </div>
 
 Рассмотрим уже готовые реализации паковщиков python-приложений.
