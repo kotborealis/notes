@@ -157,12 +157,10 @@ python_config.run_filename = "./app.py"
 ╰─❯ hyperfine "./.../example" "python3.8 ./app.py" --warmup 10
 ```
 
-<div style="font-size:30px">
 | Command | Mean [ms] | Min [ms] | Max [ms] | Relative |
 |:---|---:|---:|---:|---:|
 | `./.../example` | 15.2 ± 0.8 | 14.3 | 20.5 | 1.10 ± 0.08 |
 | `python3.8 ./app.py` | 13.8 ± 0.6 | 12.9 | 16.9 | 1.00 |
-</div>
 
 ```sh
 Summary
