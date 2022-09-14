@@ -10,3 +10,5 @@ server
 css
 public
 dist
+
+**/.out
