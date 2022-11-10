@@ -351,7 +351,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
-<li>Ленивые импорты</li>
+<li>Ленивые импорты
+<ul>
+<li>Ссылки</li>
+</ul></li>
 </ul>
 </nav>
 <h1>Ленивые импорты</h1>
@@ -420,5 +423,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 <span id="cb8-4"><a href="#cb8-4"></a><span class="im">import</span> a.b <span class="im">as</span> c</span>
 <span id="cb8-5"><a href="#cb8-5"></a><span class="im">from</span> a <span class="im">import</span> b, c  <span class="co"># a will be loaded immediately, though</span></span></code></pre></div>
 <p>Здесь основной минус — это monkeypatching в красивой обёртке, что всегда нехорошо.</p>
+<h2>Ссылки</h2>
+<ul>
+<li><a href="https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPROFILEIMPORTTIME">PYTHONPROFILEIMPORTTIME — профилирование импортов</a>;</li>
+<li><a href="https://pypi.org/project/tuna/">tuna — визуализатор профайлов</a>;</li>
+<li><a href="https://peps.python.org/pep-0690/">PEP 690 — lazy imports</a>;</li>
+<li><a href="https://github.com/facebookincubator/cinder/">cinder — optimized cpython fork</a>;</li>
+<li><a href="https://docs.python.org/3/library/importlib.html#importlib.util.LazyLoader">importlib.util.LazyLoader</a>;</li>
+<li><a href="https://github.com/bwesterb/py-demandimport/">py-demandimport</a>.</li>
+</ul>
 </body>
 </html>
