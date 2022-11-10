@@ -31,13 +31,13 @@ await Promise.all(articles.map(id =>
 ))
 
 console.log(`[index] Gather metadata...`)
-const index_data = 
+const index_data =
     (await Promise.all(
         articles
-            .map(async dir => 
+            .map(async dir =>
                 ({
                     metadata: metadataParser(
-                            (await fs.readFile(`./articles/${dir}/.out/index.md`)).toString()   
+                            (await fs.readFile(`./articles/${dir}/.out/index.md`)).toString()
                         ).metadata,
                     id: dir
                 })
@@ -49,7 +49,7 @@ const index_data =
         let b = ``;
         b += `* [${title}](./${id}.html) - *${subtitle}* ${date}\n`;
         return b;
-    });
+    }).reverse();
 
 console.log(`[index] Building...`)
 await within(async () => {
