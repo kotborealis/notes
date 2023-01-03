@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>VSCode server из ничего</title>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #444;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">VSCode server из ничего</h1>
+<p class="subtitle">Собираем опен-сорс версию code-server.</p>
+<p class="date">2023.01.23</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li>Собираем VScode-server из исходников
+<ul>
+<li>Зачем?</li>
+<li>Какие ещё варианты?</li>
+<li>Собираем
+<ul>
+<li>Зависимости</li>
+<li>product.json</li>
+<li>Релиз-сборка</li>
+<li>Сборка дистрибутива</li>
+</ul></li>
+<li>Итоги</li>
+</ul></li>
+</ul>
+</nav>
+<h1>Собираем VScode-server из исходников</h1>
+<p>Маленькое овервью, как собрать <a href="https://code.visualstudio.com/docs/remote/vscode-server">code-server</a> из <a href="https://github.com/microsoft/vscode">исходников</a>.</p>
+<h2>Зачем?</h2>
+<p>Как сказано в доках, Microsoft и так поставляет свою сборку code-server’а, которую можно скачать и использовать почти в любых целях, не нарушая <a href="https://code.visualstudio.com/license/server">лицензию</a>. Но у MS-сборки есть <em>фатальный недостаток</em>: при запуске она лезет в сеть, чтобы проверить обновления, и отказывается без этого запускаться.</p>
+<p>Если собирать code-server из исходников, в нём не будет этого механизма апдейтов, и он сможет работать в любом офлайн-окружении. А ещё не будет встроенного маркета расширений, и их придётся выкачивать и сайд-лоадить, но это не критично.</p>
+<h2>Какие ещё варианты?</h2>
+<p>Я не первый, кто придумал собирать code-server из исхдодников. Есть как минимум 3 популярных форка: * <a href="https://github.com/coder/code-server">coder/code-server</a> — форк для платформы <a href="https://coder.com">coder.com</a>: * собирает vscode со своей оболочкой, и своими патчами. * <a href="https://github.com/gitpod-io/openvscode-server">openvscode-server</a> — форк для <a href="https://gitpod.io">gitpod</a>: * начался ещё до официального code-server, как форк vscode с включенными фичами сервера; * собирает почти чистый vscode, но с патчами; * <a href="https://gitlab.com/gitlab-org/gitlab-web-ide">gitlab-web-ide</a> — форк для Web IDE <a href="https://gitlab.com">gitlab’а</a>: * не исследовал, как именно он собирается, но судя по документации и скриншотов получается кастомизированная версия.</p>
+<p>Все форки не совсем чистые, и патчат vscode для своих нужд, что мне не очень нужно.</p>
+<h2>Собираем</h2>
+<p>Пример репо с пайплайном сборки vscode - <a href="https://github.com/kotborealis/code-server-oss">kotborealis/code-server-oss</a>.</p>
+<p>Большинство этапов сборки описаны в <a href="https://github.com/microsoft/vscode/wiki/How-to-Contribute">документации</a> VSCode. Но, есть пара проблем:</p>
+<ul>
+<li>Собирается девелоперский билд, не оптимизированный и не минифицированный:
+<ul>
+<li>загружается в <em>разы</em> медленнее, чем релизный.</li>
+</ul></li>
+<li>Не собирается в air-gapped окружении, где единственный доступ к сети лежит через строгий прокси.</li>
+</ul>
+<h3>Зависимости</h3>
+<p>Конкретно, в air-gapped окружении не устанавливается зависимость <code>@vscode/ripgrep</code>, которая <a href="https://github.com/microsoft/vscode-ripgrep/blob/main/lib/download.js#L162">выкачивает себе бинарники с github</a> и не умеет работать с прокси (<a href="https://github.com/microsoft/vscode-ripgrep/issues/26">microsoft/vscode-ripgrep/issues/26</a>).</p>
+<p>Временно <a href="https://github.com/kotborealis/code-server-oss/blob/master/buildscripts/install_deps.sh#LL17C17-L17C17">выпилим</a> <code>@vscode/ripgrep</code> из зависимостей сборки, прихватив с собой утилиты для телеметрии, бесполезные в OSS-сборке:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Remove telemetry libs</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">sed</span> -i -e <span class="st">&#39;s#&quot;@vscode/telemetry-extractor&quot;: &quot;^1.9.8&quot;,##g&#39;</span> package.json</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Remove ripgrep, which, for SOME reason,</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co"># cannot be installed in this case due to proxies.</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">sed</span> -i -e <span class="st">&#39;s#&quot;@vscode/ripgrep&quot;: &quot;^1.14.2&quot;,##g&#39;</span> package.json</span></code></pre></div>
+<p>Затем, перепишем <code>.yarnrc</code>-файлы, в которых VSCode хранит информацию о таргет-платформе. По умолчанию, там <a href="https://github.com/microsoft/vscode/blob/main/.yarnrc">прописан</a> Electron:</p>
+<pre><code>disturl &quot;https://electronjs.org/headers&quot;
+target &quot;19.1.8&quot;
+runtime &quot;electron&quot;
+build_from_source &quot;true&quot;</code></pre>
+<p>Эти параметры используются для сборки нативных зависимостей, например <a href="https://github.com/microsoft/node-spdlog">spdlog</a>, и версия для Электрона не запустится на NodeJS. Перегенерируем параметры платформы <a href="https://github.com/microsoft/vscode/blob/main/build/npm/setupBuildYarnrc.js">скриптом</a> и перезапишем все инстансы <code>.yarnrc</code>:</p>
+<pre><code># Set proper node version in yarnrc
+node build/npm/setupBuildYarnrc
+cp ./build/.yarnrc ./.yarnrc
+cp ./build/.yarnrc ./remote/.yarnrc</code></pre>
+<p>Затем мы наконец-то можем поставить все зависимости и вернуть <code>@vscode/rigprep</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Install node_modules</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="ex">yarn</span> <span class="va">$@</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># Install ripgrep.</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co"># Now it works, no one knows exactly why.</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="ex">yarn</span> add @vscode/ripgrep</span></code></pre></div>
+<p>Так же до установки зависимостей полезно установить флажки, запрещающие выкачивать бинарники Electron’а и Playwright’а — для code-server’а они не потребуются:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="bu">export</span> <span class="va">ELECTRON_SKIP_BINARY_DOWNLOAD=</span>1</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="bu">export</span> <span class="va">PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=</span>1</span></code></pre></div>
+<h3>product.json</h3>
+<p>В сборках vscode используется магический файл <code>product.json</code>, в котором описывается “вкус” собираемой версии — иконка, имя, расширения по умолчанию. Ничего трогать не будем, только <a href="https://github.com/kotborealis/code-server-oss/blob/master/buildscripts/steps/20_patch.sh">обрежем</a> список расширений до нуля, которые иначе <a href="https://github.com/microsoft/vscode/blob/4acf2d9b46b75748ae687cf3b2952a0799679873/build/lib/extensions.ts#LL254C17-L254C27">выкачиваются с github’а</a>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Prevent builtin extensions from downloading</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">cat</span> product.json</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="ex">node</span> -e <span class="st">&#39;console.log(JSON.stringify({...require(&quot;./product.json&quot;), builtInExtensions: []}))&#39;</span> <span class="op">&gt;</span> product.json.tmp</span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">mv</span> product.json.tmp product.json</span></code></pre></div>
+<h3>Релиз-сборка</h3>
+<p>В доках майкрософта этой <a href="https://github.com/kotborealis/code-server-oss/blob/master/buildscripts/steps/30_build.sh">чудесной команды</a> не найдено, но её можно откопать в <a href="https://github.com/search?q=repo%3Agitpod-io%2Fopenvscode-server+reh-web&amp;type=code">форке от gitpods</a>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">yarn</span> gulp vscode-reh-web-linux-x64-min</span></code></pre></div>
+<p>Эта команда собирает релизную, минифицированную и оптимизированную версию code-server’а.</p>
+<h3>Сборка дистрибутива</h3>
+<p>Остаётся <a href="https://github.com/kotborealis/code-server-oss/blob/master/buildscripts/steps/40_postbuild.sh">вытащить</a> дистрибутив из сборочной директории:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">mkdir</span> /code-server-oss <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> /code-server-oss</span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">mv</span> /vscode/.build ./</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="fu">mv</span> /vscode/extensions ./</span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="fu">mv</span> /vscode/node_modules ./</span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="fu">mv</span> /vscode/out-vscode-reh-web-min ./out</span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="fu">mv</span> /vscode/product.json ./</span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="fu">mv</span> /vscode/package.json ./</span></code></pre></div>
+<p>И создать <a href="https://github.com/kotborealis/code-server-oss/blob/master/buildscripts/entrypoint.sh">скрипт запуска</a>, который запустит всё с нужными параметрами:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Get project root di</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="va">ROOT=</span><span class="st">&quot;</span><span class="va">$(</span> <span class="bu">cd</span> <span class="st">&quot;</span><span class="va">$(</span> <span class="fu">dirname</span> <span class="st">&quot;</span><span class="va">${BASH_SOURCE[0]}</span><span class="st">&quot;</span> <span class="va">)</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="bu">pwd</span> <span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="bu">export</span> <span class="va">NODE=$(</span><span class="fu">find</span> .build/ -name <span class="st">&#39;node&#39;</span> -type f -executable<span class="va">)</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="fu">code_server ()</span> <span class="kw">{</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="va">$NODE</span> <span class="va">$ROOT</span><span class="ex">/out/server-main.js</span> <span class="va">$@</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="kw">}</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="bu">echo</span> <span class="st">&quot;Starting server with args: </span><span class="va">$@</span><span class="st">&quot;</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="ex">code_server</span> <span class="va">$@</span></span></code></pre></div>
+<p>VScode во время сборки выкачивает для себя нужную версию NodeJS, и мы будем ей пользоваться, так как под неё собраны нативные аддоны.</p>
+<p>Затем code-server можно запустить примерно следующей командой:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a>$ <span class="ex">/code-server-oss/entrypoint.sh</span> --host 0.0.0.0 --port 8080 --without-connection-token</span></code></pre></div>
+<h2>Итоги</h2>
+<p>В итоге, получили релизную OSS-сборку code-server’а из исходников, не требующую доступа в интернет при запуске, не тащущую за собой лишние расширения.</p>
+<p>Финальный результат лежит в <a href="https://github.com/kotborealis/code-server-oss/">kotborealis/code-server-oss</a>. Так же есть [почти ежедневные сборки docker-образа]. “Почти” ежедневные потому что иногда проваливается скачивание <code>@vscode/ripgrep</code> из-за рейтлимитов github’a, и на это напарывается таже microsoft - см. <a href="https://github.com/microsoft/vscode/blob/4acf2d9b46b75748ae687cf3b2952a0799679873/build/azure-pipelines/win32/product-build-win32.yml#L143">скрипты пайплайнов</a>.</p>
+</body>
+</html>
