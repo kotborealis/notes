@@ -19,6 +19,7 @@ tags: "vscode, code-server, build, source"
 ## Какие ещё варианты?
 
 Я не первый, кто придумал собирать code-server из исхдодников. Есть как минимум 3 популярных форка:
+
 * [coder/code-server](https://github.com/coder/code-server) --- форк для платформы [coder.com](https://coder.com):
 	* собирает vscode со своей оболочкой, и своими патчами.
 * [openvscode-server](https://github.com/gitpod-io/openvscode-server) --- форк для [gitpod](https://gitpod.io):
