@@ -133,6 +133,8 @@ pre {
   white-space: pre;
   white-space: pre-wrap;
   word-wrap: break-word;
+  padding: 5px 10px;
+  background: aliceblue;
 }
 
 b, strong {
