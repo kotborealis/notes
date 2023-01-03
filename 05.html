@@ -375,7 +375,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 <p>Как сказано в доках, Microsoft и так поставляет свою сборку code-server’а, которую можно скачать и использовать почти в любых целях, не нарушая <a href="https://code.visualstudio.com/license/server">лицензию</a>. Но у MS-сборки есть <em>фатальный недостаток</em>: при запуске она лезет в сеть, чтобы проверить обновления, и отказывается без этого запускаться.</p>
 <p>Если собирать code-server из исходников, в нём не будет этого механизма апдейтов, и он сможет работать в любом офлайн-окружении. А ещё не будет встроенного маркета расширений, и их придётся выкачивать и сайд-лоадить, но это не критично.</p>
 <h2>Какие ещё варианты?</h2>
-<p>Я не первый, кто придумал собирать code-server из исхдодников. Есть как минимум 3 популярных форка: * <a href="https://github.com/coder/code-server">coder/code-server</a> — форк для платформы <a href="https://coder.com">coder.com</a>: * собирает vscode со своей оболочкой, и своими патчами. * <a href="https://github.com/gitpod-io/openvscode-server">openvscode-server</a> — форк для <a href="https://gitpod.io">gitpod</a>: * начался ещё до официального code-server, как форк vscode с включенными фичами сервера; * собирает почти чистый vscode, но с патчами; * <a href="https://gitlab.com/gitlab-org/gitlab-web-ide">gitlab-web-ide</a> — форк для Web IDE <a href="https://gitlab.com">gitlab’а</a>: * не исследовал, как именно он собирается, но судя по документации и скриншотов получается кастомизированная версия.</p>
+<p>Я не первый, кто придумал собирать code-server из исхдодников. Есть как минимум 3 популярных форка:</p>
+<ul>
+<li><a href="https://github.com/coder/code-server">coder/code-server</a> — форк для платформы <a href="https://coder.com">coder.com</a>:
+<ul>
+<li>собирает vscode со своей оболочкой, и своими патчами.</li>
+</ul></li>
+<li><a href="https://github.com/gitpod-io/openvscode-server">openvscode-server</a> — форк для <a href="https://gitpod.io">gitpod</a>:
+<ul>
+<li>начался ещё до официального code-server, как форк vscode с включенными фичами сервера;</li>
+<li>собирает почти чистый vscode, но с патчами;</li>
+</ul></li>
+<li><a href="https://gitlab.com/gitlab-org/gitlab-web-ide">gitlab-web-ide</a> — форк для Web IDE <a href="https://gitlab.com">gitlab’а</a>:
+<ul>
+<li>не исследовал, как именно он собирается, но судя по документации и скриншотов получается кастомизированная версия.</li>
+</ul></li>
+</ul>
 <p>Все форки не совсем чистые, и патчат vscode для своих нужд, что мне не очень нужно.</p>
 <h2>Собираем</h2>
 <p>Пример репо с пайплайном сборки vscode - <a href="https://github.com/kotborealis/code-server-oss">kotborealis/code-server-oss</a>.</p>
