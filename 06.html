@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>index</title>
+  <title>Эмалированное sudo</title>
   <style type="text/css">
 html {
 font-size: 100%;
@@ -366,13 +366,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } </style>
 <h1>
 <a href="../">./notes/</a>
 </h1>
+<header id="title-block-header">
+<h1 class="title">Эмалированное sudo</h1>
+<p class="subtitle">Или как сломать себе систему.</p>
+<p class="date">2023.04.12</p>
+</header>
+<h1>Эмалированное sudo</h1>
+<p><em>(надеюсь, что эта заметка не причинит никому пользы, потому что надеюсь что никто больше так не зафакапается)</em></p>
+<p>Что будет, если вы выполнили деструктивную команду, которая переписала всю систему на текущего юзера?</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="fu">sudo</span> chown -R <span class="va">$USER</span>:<span class="va">$USER</span> / </span></code></pre></div>
+<p>Во-первых, у вас отвалися <del>жопа</del> <code>sudo</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="fu">sudo</span> su</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="ex">sudo</span>: /etc/sudoers is owned by uid 1000, should be 0</span></code></pre></div>
+<p>Во-вторых - <code>ssh</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">(</span><span class="ex">other-system</span><span class="kw">)</span>$ <span class="fu">ssh</span> user@remote</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="ex">kex_exchange_identification</span>: Connection closed by remote host</span></code></pre></div>
+<p>Обязательно отвалится что-то ещё, и без <code>sudo</code> и <code>ssh</code> это не починить.</p>
+<h2>Чиним sudo</h2>
 <ul>
-<li><a href="./06.html">Эмалированное sudo</a> - <em>Или как сломать себе систему.</em> 2023.04.12</li>
-<li><a href="./05.html">VSCode server из ничего</a> - <em>Собираем опен-сорс версию code-server.</em> 2023.01.23</li>
-<li><a href="./04.html">Python lazy import</a> - <em>Оптимизация загрузки скриптов.</em> 2022.11.10</li>
-<li><a href="./03.html">Паковка python-утилит в бинарник</a> - <em>Пакуем python-код в единый, независимый, standalone бинарник.</em> 2022.08.30</li>
-<li><a href="./02.html">Грамматики TextMate</a> - <em>Описываем синтаксис регулярками.</em> 2022.07.19</li>
-<li><a href="./01.html">Склеивание репозиториев</a> - <em>Объединение двух разных репозиториев в одну историю.</em> 2022.08.19</li>
+<li><p>Открываем два терминала, через tmux или screen.</p>
+<ul>
+<li>С одним терминалом не работает.</li>
+<li>Если у вас нет tmux/screen, и ssh сломан - сожалею.</li>
+</ul></li>
+<li><p>В первом терминале получаем pid текущего шела:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="bu">echo</span> <span class="va">$$</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="ex">123456</span></span></code></pre></div></li>
+<li><p>Во втором терминале выполняем:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="ex">pkttyagent</span> --process 123456 <span class="co"># pid, полученный в первой консоли</span></span></code></pre></div></li>
+<li><p>Возвращаемся в первый терминал:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>$ <span class="ex">pkexec</span> chown root:root /etc/sudoers /etc/sudoers.d -R</span></code></pre></div></li>
+<li><p>Идём во второй терминал и вводим там пароль текущего пользователя.</p></li>
 </ul>
+<p><code>sudo</code> починен!</p>
+<h2>Чиним ssh</h2>
+<p><em>(возможно, тут хватит reboot’а, но мне было страшно его запускать)</em></p>
+<p>От такого неловкого <code>chown</code>’а наверняка слетели права на <code>/run/sshd</code>, о чём <code>sshd</code> пожалуется в логах:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a>$ <span class="fu">grep</span> sshd /var/log/auth.log <span class="kw">|</span> <span class="fu">grep</span> run</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="ex">...</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="ex">...</span> fatal: /run/sshd must be owned by root and not group or world-writable.</span></code></pre></div>
+<p>Пофиксим:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a>$ <span class="fu">sudo</span> chown root:root /run/sshd*</span></code></pre></div>
+<p>И сверху перезапустим <code>systemd-logind</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a>$ <span class="fu">sudo</span> systemctl restart systemd-logind</span></code></pre></div>
+<p>После этих действий ssh должен ожить.</p>
 </body>
 </html>
