@@ -75,6 +75,12 @@ $ sudo systemctl restart systemd-logind
 
 После этих действий ssh должен ожить.
 
+## UPD 1
+
+Я снова выстрелил себе в ногу. Запишу доп-действия:
+
+* Если у вас есть какой-то демон, который пишет в `/var/run` (например `cntlm`), проверьте что права на его директорию корректные.
+
 ## Links
 
 * [unix.stackexchange.com: How to restore a broken sudoers file without being able to use sudo?](https://unix.stackexchange.com/questions/677591/how-to-restore-a-broken-sudoers-file-without-being-able-to-use-sudo)
